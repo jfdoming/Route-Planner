@@ -3,7 +3,7 @@ package com.idkwhattoputhere.routeplanner.main;
 /**
  * Assignment: Route Planner
  * Author: Julian Dominguez-Schatz
- * Date: 2017-03-15
+ * Date: 07/05/2017
  * Description: Represents a set of configuration properties used to initialize the application window.
  */
 public class ApplicationConfig {

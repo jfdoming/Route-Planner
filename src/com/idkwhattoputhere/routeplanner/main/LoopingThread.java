@@ -3,7 +3,7 @@ package com.idkwhattoputhere.routeplanner.main;
 /**
  * Assignment: Route Planner
  * Author: Julian Dominguez-Schatz
- * Date: 06/02/2017
+ * Date: 07/05/2017
  * Description: Represents a thread that will loop until told to stop.
  */
 public abstract class LoopingThread implements Runnable {

@@ -8,7 +8,7 @@ import java.awt.event.WindowEvent;
 /**
  * Assignment: Route Planner
  * Author: Julian Dominguez-Schatz
- * Date: 2017-03-15
+ * Date: 07/05/2017
  * Description: Represents the entire application. This class provides methods for controlling the
  * application lifecycle.
  */

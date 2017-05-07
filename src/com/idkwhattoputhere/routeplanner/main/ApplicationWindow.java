@@ -7,7 +7,7 @@ import java.awt.HeadlessException;
 /**
  * Assignment: Route Planner
  * Author: Julian Dominguez-Schatz
- * Date: 09/01/2017
+ * Date: 07/05/2017
  * Description: Represents the window that the application is rendered into. It autonomously configures the application
  * window, but needs to be instantiated and shown via setVisible(true) on the AWT Event Queue.
  * <p>

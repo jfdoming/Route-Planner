@@ -3,7 +3,7 @@ package com.idkwhattoputhere.routeplanner.main;
 /**
  * Assignment: Route Planner
  * Author: Julian Dominguez-Schatz
- * Date: 09/01/2017
+ * Date: 07/05/2017
  * Description: The entry point to our application.
  */
 public class Main {
