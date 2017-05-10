@@ -25,8 +25,8 @@ public class Application {
      */
     public void start() {
         // declare the background threads to be started as soon as the window opens
-        final LoopingThread renderingLoop = new RenderingLoop();
-        final LoopingThread updatingLoop = new UpdatingLoop();
+        final LoopingThread renderingLoop = new LoopingThread(new RenderingLoop(), "rendering-loop");
+        final LoopingThread updatingLoop = new LoopingThread(new UpdatingLoop(), "updating-loop");
 
         // open our window on the event dispatch thread
         EventQueue.invokeLater(new Runnable() {
