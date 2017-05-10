@@ -18,7 +18,7 @@ public class LoopingThread implements Runnable {
     public LoopingThread(Loop loop, String name) {
         this.loop = loop;
 
-        // prepare the loop thread (a potentially expensive operation
+        // init the loop thread (a potentially expensive operation
         // that should occur before the application window is opened)
         loopThread = new Thread(this, name);
     }
@@ -39,7 +39,7 @@ public class LoopingThread implements Runnable {
 
     public void run() {
         // perform pre-loop operations
-        loop.prepare();
+        loop.init();
 
         // the looping section; runs as fast as possible
         while (!Thread.interrupted()) {

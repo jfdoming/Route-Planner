@@ -9,7 +9,7 @@ package com.idkwhattoputhere.routeplanner.main;
 public interface Loop {
 
     // runs before the loop starts
-    void prepare();
+    void init();
 
     // runs after the loop ends
     void dispose();

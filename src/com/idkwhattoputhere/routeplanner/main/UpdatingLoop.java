@@ -16,7 +16,7 @@ public class UpdatingLoop implements Loop {
     }
 
     @Override
-    public void prepare() {
+    public void init() {
     }
 
     @Override
