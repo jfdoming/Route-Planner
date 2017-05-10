@@ -1,7 +1,5 @@
-package com.idkwhattoputhere.routeplanner.main;
+package jds_wn_dx.routeplanner.main;
 
-import com.idkwhattoputhere.routeplanner.utils.LayerUtils;
-import com.idkwhattoputhere.routeplanner.view.PathLayer;
 import gov.nasa.worldwind.Model;
 import gov.nasa.worldwind.WorldWind;
 import gov.nasa.worldwind.avlist.AVKey;
@@ -16,6 +14,8 @@ import gov.nasa.worldwind.render.markers.BasicMarker;
 import gov.nasa.worldwind.render.markers.BasicMarkerAttributes;
 import gov.nasa.worldwind.render.markers.Marker;
 import gov.nasa.worldwind.util.BasicDragger;
+import jds_wn_dx.routeplanner.utils.LayerUtils;
+import jds_wn_dx.routeplanner.view.PathLayer;
 
 import javax.swing.JFrame;
 import java.awt.Color;

@@ -1,12 +1,12 @@
-package com.idkwhattoputhere.routeplanner.view;
+package jds_wn_dx.routeplanner.view;
 
-import com.idkwhattoputhere.routeplanner.utils.LayerUtils;
 import gov.nasa.worldwind.WorldWind;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
 import gov.nasa.worldwind.layers.RenderableLayer;
 import gov.nasa.worldwind.render.Path;
 import gov.nasa.worldwind.render.ShapeAttributes;
+import jds_wn_dx.routeplanner.utils.LayerUtils;
 
 /**
  * Assignment: Route Planner

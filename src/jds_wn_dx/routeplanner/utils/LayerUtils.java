@@ -1,4 +1,4 @@
-package com.idkwhattoputhere.routeplanner.utils;
+package jds_wn_dx.routeplanner.utils;
 
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.layers.CompassLayer;

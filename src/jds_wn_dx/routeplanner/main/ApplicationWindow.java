@@ -1,4 +1,4 @@
-package com.idkwhattoputhere.routeplanner.main;
+package jds_wn_dx.routeplanner.main;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;

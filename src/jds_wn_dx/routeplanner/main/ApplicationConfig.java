@@ -1,4 +1,4 @@
-package com.idkwhattoputhere.routeplanner.main;
+package jds_wn_dx.routeplanner.main;
 
 /**
  * Assignment: Route Planner
