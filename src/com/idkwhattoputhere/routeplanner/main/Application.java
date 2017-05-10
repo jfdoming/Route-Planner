@@ -1,9 +1,29 @@
 package com.idkwhattoputhere.routeplanner.main;
 
+import com.idkwhattoputhere.routeplanner.utils.LayerUtils;
+import com.idkwhattoputhere.routeplanner.view.PathLayer;
+import gov.nasa.worldwind.Model;
+import gov.nasa.worldwind.WorldWind;
+import gov.nasa.worldwind.avlist.AVKey;
+import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
+import gov.nasa.worldwind.geom.Position;
+import gov.nasa.worldwind.layers.MarkerLayer;
+import gov.nasa.worldwind.render.BasicShapeAttributes;
+import gov.nasa.worldwind.render.Material;
+import gov.nasa.worldwind.render.Path;
+import gov.nasa.worldwind.render.ShapeAttributes;
+import gov.nasa.worldwind.render.markers.BasicMarker;
+import gov.nasa.worldwind.render.markers.BasicMarkerAttributes;
+import gov.nasa.worldwind.render.markers.Marker;
+import gov.nasa.worldwind.util.BasicDragger;
+
 import javax.swing.JFrame;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Assignment: Route Planner
@@ -25,7 +45,6 @@ public class Application {
      */
     public void start() {
         // declare the background threads to be started as soon as the window opens
-        final LoopingThread renderingLoop = new LoopingThread(new RenderingLoop(), "rendering-loop");
         final LoopingThread updatingLoop = new LoopingThread(new UpdatingLoop(), "updating-loop");
 
         // open our window on the event dispatch thread
@@ -46,14 +65,12 @@ public class Application {
 
                         // start the application threads
                         updatingLoop.start();
-                        renderingLoop.start();
                     }
 
                     @Override
                     public void windowClosing(WindowEvent e) {
                         // tell the application threads to stop (blocking)
                         updatingLoop.stop();
-                        renderingLoop.stop();
 
                         // close the window
                         applicationWindow.dispose();
@@ -66,7 +83,38 @@ public class Application {
         });
     }
 
-    private void initializeWidgets(JFrame applicationWindow) {
-        // TODO add widget setup code here
+    private void initializeWidgets(final JFrame applicationWindow) {
+        WorldWindowGLCanvas wwd = new WorldWindowGLCanvas();
+
+        wwd.addSelectListener(new BasicDragger(wwd));
+        wwd.setModel((Model) WorldWind.createConfigurationComponent(AVKey.MODEL_CLASS_NAME));
+        wwd.addRenderingExceptionListener(new AbsentRequirementExceptionListener());
+
+        // Create and set an attribute bundle.
+        ShapeAttributes attrs = new BasicShapeAttributes();
+        attrs.setOutlineMaterial(new Material(Color.YELLOW));
+        attrs.setOutlineWidth(2);
+
+        PathLayer pathLayer = new PathLayer(attrs);
+
+        // Create a path, set some of its properties and set its attributes.
+        ArrayList<Position> pathPositions = new ArrayList<>();
+        pathPositions.add(Position.fromDegrees(28, -102, 1e5));
+        pathPositions.add(Position.fromDegrees(100, -100, 1e5));
+        Path path = new Path(pathPositions);
+        pathLayer.addPath(path);
+
+        pathLayer.addTo(wwd);
+
+        BasicMarkerAttributes mAttrs = new BasicMarkerAttributes();
+        mAttrs.setMaterial(new Material(Color.YELLOW));
+
+        List<Marker> markers = new ArrayList<>(1);
+        markers.add(new BasicMarker(Position.fromDegrees(90, 0), mAttrs));
+        MarkerLayer markerLayer = new MarkerLayer();
+        markerLayer.setMarkers(markers);
+        LayerUtils.insertBeforeCompass(wwd, markerLayer);
+
+        applicationWindow.getContentPane().add(wwd, java.awt.BorderLayout.CENTER);
     }
 }
