@@ -4,13 +4,20 @@ package com.idkwhattoputhere.routeplanner.main;
  * Assignment: Route Planner
  * Author: Julian Dominguez-Schatz
  * Date: 07/05/2017
- * Description: Represents a thread that will loop until told to stop.
+ * Description: Represents a thread that will execute a loop until told to stop.
  */
-public abstract class LoopingThread implements Runnable {
+public class LoopingThread implements Runnable {
 
+    private final Loop loop;
     private Thread loopThread;
 
-    public LoopingThread(String name) {
+    public LoopingThread(Loop loop) {
+        this(loop, "unnamed-loop");
+    }
+
+    public LoopingThread(Loop loop, String name) {
+        this.loop = loop;
+
         // prepare the loop thread (a potentially expensive operation
         // that should occur before the application window is opened)
         loopThread = new Thread(this, name);
@@ -30,27 +37,16 @@ public abstract class LoopingThread implements Runnable {
         }
     }
 
-    @Override
     public void run() {
         // perform pre-loop operations
-        prepare();
+        loop.prepare();
 
         // the looping section; runs as fast as possible
         while (!Thread.interrupted()) {
-            update();
+            loop.update();
         }
 
         // perform post-loop operations
-        dispose();
+        loop.dispose();
     }
-
-    // not required to implement but provided nonetheless
-    protected void prepare() {
-    }
-
-    protected void dispose() {
-    }
-
-    // required to implement
-    protected abstract void update();
 }

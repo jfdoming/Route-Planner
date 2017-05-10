@@ -6,24 +6,20 @@ package com.idkwhattoputhere.routeplanner.main;
  * Date: 07/05/2017
  * Description: Represents the rendering loop in our application.
  */
-public class RenderingLoop extends LoopingThread {
+public class RenderingLoop implements Loop {
 
     public RenderingLoop() {
-        super("rendering-loop");
     }
 
     @Override
-    protected void update() {
-
+    public void update() {
     }
 
     @Override
-    protected void prepare() {
-        super.prepare();
+    public void prepare() {
     }
 
     @Override
-    protected void dispose() {
-        super.dispose();
+    public void dispose() {
     }
 }

@@ -6,24 +6,20 @@ package com.idkwhattoputhere.routeplanner.main;
  * Date: 07/05/2017
  * Description: Represents the updating loop in our application.
  */
-public class UpdatingLoop extends LoopingThread {
+public class UpdatingLoop implements Loop {
 
     public UpdatingLoop() {
-        super("updating-loop");
     }
 
     @Override
-    protected void update() {
-
+    public void update() {
     }
 
     @Override
-    protected void prepare() {
-        super.prepare();
+    public void prepare() {
     }
 
     @Override
-    protected void dispose() {
-        super.dispose();
+    public void dispose() {
     }
 }
