@@ -14,6 +14,8 @@ import gov.nasa.worldwind.render.markers.BasicMarker;
 import gov.nasa.worldwind.render.markers.BasicMarkerAttributes;
 import gov.nasa.worldwind.render.markers.Marker;
 import gov.nasa.worldwind.util.BasicDragger;
+import gov.nasa.worldwind.view.orbit.OrbitView;
+import gov.nasa.worldwind.view.orbit.OrbitViewLimits;
 import jds_wn_dx.routeplanner.utils.LayerUtils;
 import jds_wn_dx.routeplanner.view.PathLayer;
 
@@ -89,6 +91,8 @@ public class Application {
         wwd.addSelectListener(new BasicDragger(wwd));
         wwd.setModel((Model) WorldWind.createConfigurationComponent(AVKey.MODEL_CLASS_NAME));
         wwd.addRenderingExceptionListener(new AbsentRequirementExceptionListener());
+        OrbitViewLimits limits = ((OrbitView) wwd.getView()).getOrbitViewLimits();
+        limits.setZoomLimits(1e5, 1e8);
 
         // Create and set an attribute bundle.
         ShapeAttributes attrs = new BasicShapeAttributes();
