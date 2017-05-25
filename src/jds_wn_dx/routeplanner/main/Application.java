@@ -18,6 +18,7 @@ import gov.nasa.worldwind.view.orbit.OrbitView;
 import gov.nasa.worldwind.view.orbit.OrbitViewLimits;
 import jds_wn_dx.routeplanner.utils.LayerUtils;
 import jds_wn_dx.routeplanner.view.PathLayer;
+import jds_wn_dx.routeplanner.controller.LoopingThread;
 
 import javax.swing.JFrame;
 import java.awt.Color;
