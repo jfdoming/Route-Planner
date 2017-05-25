@@ -1,4 +1,4 @@
-package jds_wn_dx.routeplanner.main;
+package jds_wn_dx.routeplanner.controller;
 
 /**
  * Assignment: Route Planner
