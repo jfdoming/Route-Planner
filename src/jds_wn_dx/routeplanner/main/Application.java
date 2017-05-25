@@ -27,6 +27,8 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import jds_wn_dx.routeplanner.controller.LoopingThread;
+
 /**
  * Assignment: Route Planner
  * Author: Julian Dominguez-Schatz
