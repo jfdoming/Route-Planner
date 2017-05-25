@@ -16,7 +16,7 @@ public class Route {
     private ArrayList<RouteSegment> children;
     private Position.PositionList routePoints;
 
-    public Route(int type, Position startPoint, Position endPoint) {
+    public Route() {
         children = new ArrayList<>();
     }
 

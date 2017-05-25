@@ -23,6 +23,7 @@ public class RouteSegment {
      * This is the number of lines to draw.
      */
     private static final int ARC_RESOLUTION = 50;
+    private final double arcRadius;
 
     private int type;
 
@@ -31,11 +32,20 @@ public class RouteSegment {
 
     private Position.PositionList pathPoints;
 
-    public RouteSegment(int type, Position startPoint, Position endPoint) {
-        this.type = type;
+    public RouteSegment(Position startPoint, Position endPoint) {
+        this.type = LINEAR;
 
         this.startPoint = startPoint;
         this.endPoint = endPoint;
+        this.arcRadius = 0;
+    }
+
+    public RouteSegment(Position startPoint, Position endPoint, double radius) {
+        this.type = ARC;
+
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+        this.arcRadius = radius;
     }
 
     public Position.PositionList buildPath() {
@@ -48,7 +58,7 @@ public class RouteSegment {
                     list = Collections.unmodifiableList(buildLinearSegment());
                     break;
                 case ARC:
-                    list = Collections.unmodifiableList(buildArcSegment(ARC_RESOLUTION));
+                    list = Collections.unmodifiableList(buildArcSegment(arcRadius, ARC_RESOLUTION));
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid route type!");
@@ -61,10 +71,26 @@ public class RouteSegment {
     }
 
     private List<Position> buildLinearSegment() {
-        return buildArcSegment(1);
+        ArrayList<Position> positions = new ArrayList<>(2);
+        positions.add(startPoint);
+        positions.add(endPoint);
+        return positions;
     }
 
-    private List<Position> buildArcSegment(int resolution) {
+    private List<Position> buildArcSegment(double radius, int resolution) {
+//        Line line = new Line(startPoint, endPoint);
+//        Point2D.Double avg = startPoint.
+//        Line perpLine = new Line(line);
+//        perpLine.perp(avg);
+//        Point2D.Double radiusPoint = perpLine.getClosestPoint(new Point2D(mouseX, mouseY));
+//        Point2D.Double closestPoint = line.getClosestPoint(radiusPoint);
+//
+//        Line perpBisector1 = new Line(p1, radiusPoint);
+//        perpBisector1.perp(p1.avg(radiusPoint));
+//        Line perpBisector2 = new Line(p2, radiusPoint);
+//        perpBisector2.perp(p2.avg(radiusPoint));
+//        Point2D circleCentre = perpBisector1.getIntersection(perpBisector2);
+
         int pointCount = resolution + 1;
         ArrayList<Position> positions = new ArrayList<>(pointCount);
 
