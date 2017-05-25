@@ -1,5 +1,6 @@
 package jds_wn_dx.routeplanner.model;
 
+import gov.nasa.worldwind.geom.LatLon;
 import gov.nasa.worldwind.geom.Position;
 
 import java.util.ArrayList;
@@ -94,9 +95,14 @@ public class RouteSegment {
         int pointCount = resolution + 1;
         ArrayList<Position> positions = new ArrayList<>(pointCount);
 
+        double a = Math.toRadians(120), b = Math.toRadians(360);
+
         positions.add(startPoint);
         for (int i = 1; i < resolution; i++) {
             // TODO implement
+            double z = (b - a)/resolution;
+            Position p = new Position(LatLon.fromRadians(Math.cos(a + z * i) * radius, Math.sin(a + z * i) * radius), 5000);
+            positions.add(p);
         }
         positions.add(endPoint);
 
