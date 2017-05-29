@@ -4,6 +4,8 @@ import jds_wn_dx.routeplanner.controller.LoopingThread;
 import jds_wn_dx.routeplanner.view.ApplicationWindow;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.EventQueue;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -31,36 +33,51 @@ public class Application {
         final LoopingThread updatingLoop = new LoopingThread(new UpdatingLoop(), "updating-loop");
 
         // open our window on the event dispatch thread
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // create and initialize the application window
-                final JFrame applicationWindow = new ApplicationWindow(config);
-
-                // listen for window events (opening, closing, etc.)
-                applicationWindow.addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowOpened(WindowEvent e) {
-                        // attempt to capture focus
-                        applicationWindow.requestFocus();
-
-                        // start the application threads
-                        updatingLoop.start();
-                    }
-
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        // tell the application threads to stop (blocking)
-                        updatingLoop.stop();
-
-                        // close the window
-                        applicationWindow.dispose();
-                    }
-                });
-
-                // open the application window
-                applicationWindow.setVisible(true);
+        EventQueue.invokeLater(() -> {
+            if (config.isUsingSystemUI()) {
+                enableSystemUI();
             }
+
+            // create and initialize the application window
+            final JFrame applicationWindow = new ApplicationWindow(config);
+
+            // listen for window events (opening, closing, etc.)
+            applicationWindow.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowOpened(WindowEvent e) {
+                    // attempt to capture focus
+                    applicationWindow.requestFocus();
+
+                    // start the application threads
+                    updatingLoop.start();
+                }
+
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    // tell the application threads to stop (blocking)
+                    updatingLoop.stop();
+
+                    // close the window
+                    applicationWindow.dispose();
+                }
+            });
+
+            // open the application window
+            applicationWindow.setVisible(true);
         });
+    }
+
+    private void enableSystemUI() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException e) {
+            System.err.println("Failed to locate system UI class!");
+        } catch (InstantiationException e) {
+            System.err.println("Failed to instantiate system UI class!");
+        } catch (IllegalAccessException e) {
+            System.err.println("Failed to access system UI class!");
+        } catch (UnsupportedLookAndFeelException e) {
+            System.err.println("System UI class invalid!");
+        }
     }
 }

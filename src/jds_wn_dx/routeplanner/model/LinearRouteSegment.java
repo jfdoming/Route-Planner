@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class LinearRouteSegment extends RouteSegment {
 
-    protected Position.PositionList pathPoints;
+    private Position.PositionList pathPoints;
 
     public LinearRouteSegment(Position startPoint, Position endPoint) {
         super(startPoint, endPoint);
@@ -25,17 +25,6 @@ public class LinearRouteSegment extends RouteSegment {
             List<Position> positions = new ArrayList<>(3);
 
             positions.add(startPoint);
-
-            Position middlePos;
-            if (startPoint.getElevation() > endPoint.getElevation()) {
-                middlePos = new Position(
-                        Position.interpolateGreatCircle(0.9, startPoint, endPoint), startPoint.getElevation());
-            } else {
-                middlePos = new Position(
-                        Position.interpolateGreatCircle(0.1, startPoint, endPoint), endPoint.getElevation());
-            }
-
-            positions.add(middlePos);
             positions.add(endPoint);
 
             this.pathPoints = new Position.PositionList(positions);

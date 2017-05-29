@@ -14,6 +14,7 @@ public class ApplicationConfig {
     private static final String DEFAULT_TITLE = "";
     private static final boolean DEFAULT_CENTERED = true;
     private static final boolean DEFAULT_USING_ACTIVE_RENDERING = true;
+    private static final boolean DEFAULT_USING_SYSTEM_UI = false;
 
     // the dimensions of the window
     private int width;
@@ -28,6 +29,9 @@ public class ApplicationConfig {
     // whether to render actively or passively
     private boolean usingActiveRendering;
 
+    // whether to use the system UI skin
+    private boolean usingSystemUI;
+
     // default constructor; initializes this configuration with the default values
     public ApplicationConfig() {
         width = DEFAULT_WIDTH;
@@ -35,6 +39,7 @@ public class ApplicationConfig {
         title = DEFAULT_TITLE;
         centered = DEFAULT_CENTERED;
         usingActiveRendering = DEFAULT_USING_ACTIVE_RENDERING;
+        usingSystemUI = DEFAULT_USING_SYSTEM_UI;
     }
 
     // getters
@@ -57,6 +62,10 @@ public class ApplicationConfig {
 
     public boolean isUsingActiveRendering() {
         return usingActiveRendering;
+    }
+
+    public boolean isUsingSystemUI() {
+        return usingSystemUI;
     }
 
     // setters
@@ -84,5 +93,10 @@ public class ApplicationConfig {
 
     public void setUsingActiveRendering(boolean usingActiveRendering) {
         this.usingActiveRendering = usingActiveRendering;
+    }
+
+    public ApplicationConfig setUsingSystemUI(boolean usingSystemUI) {
+        this.usingSystemUI = usingSystemUI;
+        return this;
     }
 }

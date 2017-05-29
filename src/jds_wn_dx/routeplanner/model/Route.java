@@ -20,8 +20,16 @@ public class Route {
         children = new ArrayList<>();
     }
 
-    public RouteSegment get(int index) {
+    public RouteSegment getLatestSegment() {
+        return children.get(children.size() - 1);
+    }
+
+    public RouteSegment getSegment(int index) {
         return children.get(index);
+    }
+
+    public int getSegmentCount() {
+        return children.size();
     }
 
     public void add(RouteSegment routeSegment) {

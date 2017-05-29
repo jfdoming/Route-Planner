@@ -1,111 +1,97 @@
 package jds_wn_dx.routeplanner.view;
 
-import gov.nasa.worldwind.WorldWindow;
-import gov.nasa.worldwind.geom.Position;
-import jds_wn_dx.routeplanner.model.Route;
-import jds_wn_dx.routeplanner.model.RouteSegment;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.io.File;
 
 /**
- * Assignment: Route Planner
- * Author: Waseef Nayeem
- * Date: 07/05/2017
- * Description: Object that contains UI elements
- *
- * This object is a view object.
+ * Route-Planner
+ * Waseef Nayeem
+ * 29/05/2017
  */
-public class UIPanel extends JPanel implements MouseListener {
+public class UIPanel extends JPanel {
 
-    private WorldWindow window;
-    private boolean active, started;
+    private boolean active;
 
-    private Route route;
-    private Position start, end;
-
-    public UIPanel(WorldWindow window) {
-        this.setPreferredSize(new Dimension(160, 480));
-
-        this.setFocusable(true);
-        this.addMouseListener(this);
-
-        route = new Route();
-
-        setWindow(window);
+    public UIPanel() {
+        init();
         initComponents();
     }
 
+    private void init() {
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+    }
+
     private void initComponents() {
+        JTextField title = new JTextField(10);
+
+        JComboBox<String> type = new JComboBox<>();
+        type.addItem("LINEAR");
+        type.addItem("DESCENT");
         JButton start = new JButton("Start");
-        JButton stop = new JButton("Stop");
+        JButton save = new JButton("Save");
+        JButton load = new JButton("Load");
 
-        start.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        start.addActionListener(e -> {
+            if (!active) {
+                start.setText("Stop");
                 active = true;
-            }
-        });
-
-        stop.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            } else {
+                start.setText("Start");
                 active = false;
             }
         });
 
-        this.add(start);
-        this.add(stop);
-    }
+        save.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "XML Files", "xml");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showSaveDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File saveFile = chooser.getSelectedFile();
+                System.out.println(saveFile);
+            }
+        });
 
-    public void setWindow(WorldWindow window) {
-        this.window = window;
-    }
+        load.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "XML Files", "xml");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showOpenDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File loadFile = chooser.getSelectedFile();
+                System.out.println(loadFile);
+            }
+        });
 
-    public Position getCurrentMousePosition() {
-        return window.getCurrentPosition();
-    }
+        JPanel topPanel = new ShrinkingPanel(false, true);
+        topPanel.add(title);
+        topPanel.add(type);
+        topPanel.add(start);
+        add(topPanel);
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
+        add(Box.createVerticalGlue());
 
-    }
+        JPanel bottomPanel = new ShrinkingPanel(false, true);
+        bottomPanel.setLayout(new GridBagLayout());
+        GridBagConstraints cons = new GridBagConstraints();
+        cons.fill = GridBagConstraints.HORIZONTAL;
+        cons.weightx = 1;
+        cons.gridx = GridBagConstraints.RELATIVE;
+        cons.gridy = 0;
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        if (active && !started) {
-            start = getCurrentMousePosition();
-            started = true;
-        }
-
-        if (active && started) {
-            end = getCurrentMousePosition();
-            started = false;
-
-            route.add(new RouteSegment(start, end));
-        }
-    }
-
-    public Route getRoute() {
-        return route;
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
+        bottomPanel.add(save, cons);
+        bottomPanel.add(load, cons);
+        add(bottomPanel);
     }
 }
