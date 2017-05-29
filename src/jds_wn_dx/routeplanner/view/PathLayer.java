@@ -31,7 +31,7 @@ public class PathLayer {
     public void addPath(Path path) {
         path.setAttributes(attributes);
         path.setAltitudeMode(WorldWind.RELATIVE_TO_GROUND);
-        path.setPathType(AVKey.LINEAR);
+        path.setPathType(AVKey.GREAT_CIRCLE);
 
         layer.addRenderable(path);
     }

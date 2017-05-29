@@ -1,4 +1,4 @@
-package jds_wn_dx.routeplanner.main;
+package jds_wn_dx.routeplanner.view;
 
 import gov.nasa.worldwind.Model;
 import gov.nasa.worldwind.WorldWind;
@@ -13,11 +13,11 @@ import gov.nasa.worldwind.render.ShapeAttributes;
 import gov.nasa.worldwind.render.markers.BasicMarker;
 import gov.nasa.worldwind.render.markers.BasicMarkerAttributes;
 import gov.nasa.worldwind.render.markers.Marker;
-import gov.nasa.worldwind.util.BasicDragger;
 import gov.nasa.worldwind.view.orbit.OrbitView;
 import gov.nasa.worldwind.view.orbit.OrbitViewLimits;
+import jds_wn_dx.routeplanner.main.AbsentRequirementExceptionListener;
+import jds_wn_dx.routeplanner.main.ApplicationConfig;
 import jds_wn_dx.routeplanner.utils.LayerUtils;
-import jds_wn_dx.routeplanner.view.PathLayer;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -36,6 +36,11 @@ import java.util.List;
  * This object is a view object.
  */
 public class ApplicationWindow extends JFrame {
+
+    public static final double MIN_ZOOM = 1e5;
+    public static final double MAX_ZOOM = 1e8;
+
+    private Position currentPoint;
 
     /**
      * Default constructor
@@ -71,26 +76,34 @@ public class ApplicationWindow extends JFrame {
      */
     private void initializeWidgets() {
         WorldWindowGLCanvas wwd = new WorldWindowGLCanvas();
-
-        wwd.addSelectListener(new BasicDragger(wwd));
         wwd.setModel((Model) WorldWind.createConfigurationComponent(AVKey.MODEL_CLASS_NAME));
-        wwd.addRenderingExceptionListener(new AbsentRequirementExceptionListener());
-        OrbitViewLimits limits = ((OrbitView) wwd.getView()).getOrbitViewLimits();
-        limits.setZoomLimits(1e5, 1e8);
 
-        // Create and set an attribute bundle.
+        // If an exception occurs, we want to know about it.
+        wwd.addRenderingExceptionListener(new AbsentRequirementExceptionListener());
+
+        // Limit the zoom so the user doesn't break the API.
+        OrbitViewLimits limits = ((OrbitView) wwd.getView()).getOrbitViewLimits();
+        limits.setZoomLimits(MIN_ZOOM, MAX_ZOOM);
+
+        // Specify the colour, shape etc. of lines to be drawn.
         ShapeAttributes attrs = new BasicShapeAttributes();
         attrs.setOutlineMaterial(new Material(Color.YELLOW));
         attrs.setOutlineWidth(2);
 
+        // Instantiate the layer that holds all paths being drawn.
         PathLayer pathLayer = new PathLayer(attrs);
 
-        // Create a path, set some of its properties and set its attributes.
-        ArrayList<Position> pathPositions = new ArrayList<>();
-        pathPositions.add(Position.fromDegrees(28, -102, 1e5));
-        pathPositions.add(Position.fromDegrees(100, -100, 1e5));
-        Path path = new Path(pathPositions);
+        Path path = new Path();
         pathLayer.addPath(path);
+
+        wwd.getInputHandler().addMouseMotionListener(new PositionListener(wwd, path));
+
+        // Create a path, set some of its properties and set its attributes.
+//        ArrayList<Position> pathPositions = new ArrayList<>();
+//        pathPositions.add(Position.fromDegrees(28, -102, 1e5));
+//        pathPositions.add(Position.fromDegrees(100, -100, 1e5));
+//        Path path = new Path(pathPositions);
+//        pathLayer.addPath(path);
 
         pathLayer.addTo(wwd);
 
@@ -99,6 +112,7 @@ public class ApplicationWindow extends JFrame {
 
         List<Marker> markers = new ArrayList<>(1);
         markers.add(new BasicMarker(Position.fromDegrees(90, 0), mAttrs));
+//        currentPoint = markers.get(0);
         MarkerLayer markerLayer = new MarkerLayer();
         markerLayer.setMarkers(markers);
         LayerUtils.insertBeforeCompass(wwd, markerLayer);

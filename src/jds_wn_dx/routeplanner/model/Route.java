@@ -20,6 +20,10 @@ public class Route {
         children = new ArrayList<>();
     }
 
+    public RouteSegment get(int index) {
+        return children.get(index);
+    }
+
     public void add(RouteSegment routeSegment) {
         children.add(routeSegment);
 
@@ -33,7 +37,7 @@ public class Route {
             List<Position> list = new ArrayList<>();
 
             for (RouteSegment child : children) {
-                list.addAll(child.buildPath().list);
+                list.addAll(child.buildSegment(null).list);
             }
 
             this.routePoints = new Position.PositionList(list);

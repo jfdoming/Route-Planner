@@ -10,5 +10,6 @@
     <orderEntry type="library" name="Support Libraries" level="project" />
     <orderEntry type="library" name="worldwindx" level="project" />
     <orderEntry type="library" name="WorldWind" level="project" />
+    <orderEntry type="library" name="worldwind" level="project" />
   </component>
 </module>
