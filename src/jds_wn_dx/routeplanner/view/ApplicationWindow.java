@@ -76,6 +76,7 @@ public class ApplicationWindow extends JFrame {
      */
     private void initializeWidgets() {
         WorldWindowGLCanvas wwd = new WorldWindowGLCanvas();
+        UIPanel ui = new UIPanel();
         wwd.setModel((Model) WorldWind.createConfigurationComponent(AVKey.MODEL_CLASS_NAME));
 
         // If an exception occurs, we want to know about it.
@@ -108,7 +109,7 @@ public class ApplicationWindow extends JFrame {
         pathLayer.addTo(wwd);
 
         BasicMarkerAttributes mAttrs = new BasicMarkerAttributes();
-        mAttrs.setMaterial(new Material(Color.YELLOW));
+        mAttrs.setMaterial(new Material(Color.WHITE));
 
         List<Marker> markers = new ArrayList<>(1);
         markers.add(new BasicMarker(Position.fromDegrees(90, 0), mAttrs));
@@ -118,5 +119,6 @@ public class ApplicationWindow extends JFrame {
         LayerUtils.insertBeforeCompass(wwd, markerLayer);
 
         getContentPane().add(wwd, java.awt.BorderLayout.CENTER);
+        getContentPane().add(ui, java.awt.BorderLayout.WEST);
     }
 }
