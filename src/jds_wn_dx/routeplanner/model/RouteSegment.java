@@ -19,4 +19,12 @@ public abstract class RouteSegment {
     }
 
     public abstract Position.PositionList buildSegment(Position mousePosition);
+
+    public Position getStartPoint() {
+        return startPoint;
+    }
+
+    public Position getEndPoint() {
+        return endPoint;
+    }
 }

@@ -40,10 +40,8 @@ public class ApplicationWindow extends JFrame {
     public static final double MIN_ZOOM = 1e5;
     public static final double MAX_ZOOM = 1e8;
 
-    private Position currentPoint;
-
     /**
-     * Default constructor
+     * Default constructor.
      * Throws HeadlessException if the peripherals necessary to display and
      * interact with a window are not available.
      */
