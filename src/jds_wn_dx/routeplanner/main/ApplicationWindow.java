@@ -18,11 +18,11 @@ import gov.nasa.worldwind.view.orbit.OrbitView;
 import gov.nasa.worldwind.view.orbit.OrbitViewLimits;
 import jds_wn_dx.routeplanner.utils.LayerUtils;
 import jds_wn_dx.routeplanner.view.PathLayer;
+import jds_wn_dx.routeplanner.view.UIPanel;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
-import java.awt.Color;
-import java.awt.HeadlessException;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +71,7 @@ public class ApplicationWindow extends JFrame {
      */
     private void initializeWidgets() {
         WorldWindowGLCanvas wwd = new WorldWindowGLCanvas();
+        UIPanel ui = new UIPanel(wwd);
 
         wwd.addSelectListener(new BasicDragger(wwd));
         wwd.setModel((Model) WorldWind.createConfigurationComponent(AVKey.MODEL_CLASS_NAME));
@@ -103,6 +104,7 @@ public class ApplicationWindow extends JFrame {
         markerLayer.setMarkers(markers);
         LayerUtils.insertBeforeCompass(wwd, markerLayer);
 
-        getContentPane().add(wwd, java.awt.BorderLayout.CENTER);
+        getContentPane().add(wwd, BorderLayout.CENTER);
+        getContentPane().add(ui, BorderLayout.WEST);
     }
 }
