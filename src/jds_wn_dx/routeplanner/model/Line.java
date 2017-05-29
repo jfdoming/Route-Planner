@@ -47,21 +47,21 @@ public class Line {
         }
     }
 
-    private Point2D solveVerticalIntersection(Line vert, Line other) {
+    private Point2D.Double solveVerticalIntersection(Line vert, Line other) {
         double x = vert.intercept;
         double y = other.eval(x);
 
         return new Point2D.Double(x, y);
     }
 
-    private Point2D solveIntersection(Line first, Line other) {
+    private Point2D.Double solveIntersection(Line first, Line other) {
         double x = (other.intercept - first.intercept) / (first.slope - other.slope);
         double y = first.eval(x);
 
         return new Point2D.Double(x, y);
     }
 
-    public Point2D getIntersection(Line other) {
+    public Point2D.Double getIntersection(Line other) {
         if ((this.verticalLine && other.verticalLine) ||
         (!(this.verticalLine || other.verticalLine) && this.slope == other.slope)) {
             // the other line is either parallel or congruent to this line; either way the intersection point isn't useful
@@ -100,7 +100,7 @@ public class Line {
         }
     }
 
-    public Point2D getClosestPoint(Point2D.Double point) {
+    public Point2D.Double getClosestPoint(Point2D.Double point) {
         Line temp = new Line(this);
         temp.perp(point);
         return temp.getIntersection(this);
@@ -112,6 +112,27 @@ public class Line {
         }
 
         return Math.atan2(1, this.eval(1) - this.eval(0));
+    }
+
+    // https://stackoverflow.com/questions/1560492/how-to-tell-whether-a-point-is-to-the-right-or-left-side-of-a-line
+    public int getPosition(Point2D.Double point) {
+        double returnValue;
+
+        if (this.verticalLine) {
+            returnValue = -Math.signum(point.x - this.intercept);
+        } else {
+            double ax = 0;
+            double bx = 1;
+            double ay = eval(ax);
+            double by = eval(bx);
+
+            returnValue = Math.signum((bx - ax) * (point.y - ay) - (by - ay) * (point.x - ax));
+            if (slope < 0) {
+                returnValue *= -1;
+            }
+        }
+
+        return (int) returnValue;
     }
 
     @Override
