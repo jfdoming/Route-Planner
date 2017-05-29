@@ -3,7 +3,7 @@ package jds_wn_dx.routeplanner.view;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.render.Path;
-import jds_wn_dx.routeplanner.model.ArcRouteSegment;
+import jds_wn_dx.routeplanner.model.LinearRouteSegment;
 import jds_wn_dx.routeplanner.model.RouteSegment;
 
 import java.awt.event.MouseAdapter;
@@ -23,12 +23,11 @@ public class PositionListener extends MouseAdapter {
     public PositionListener(WorldWindow wwd, Path modify) {
         this.wwd = wwd;
         this.modify = modify;
-        this.segment = new ArcRouteSegment(Position.fromDegrees(90, 0, 1e6), Position.fromDegrees(80, 0, 1e5));
+        this.segment = new LinearRouteSegment(Position.fromDegrees(90, 0, 1e6), Position.fromDegrees(80, 0, 1e5));
     }
 
     @Override
     public void mouseClicked(MouseEvent event) {
-        System.out.println(wwd.getCurrentPosition());
     }
 
     @Override
@@ -36,7 +35,6 @@ public class PositionListener extends MouseAdapter {
         Position mousePosition = wwd.getCurrentPosition();
         if (mousePosition != null) {
             modify.setPositions(segment.buildSegment(mousePosition).list);
-            System.out.println(segment.buildSegment(mousePosition).list);
         }
     }
 }
