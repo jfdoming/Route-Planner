@@ -38,8 +38,8 @@ import java.util.List;
  */
 public class ApplicationWindow extends JFrame {
 
-    public static final double MIN_ZOOM = 1e5;
-    public static final double MAX_ZOOM = 1e8;
+    private static final double MIN_ZOOM = 1e5;
+    private static final double MAX_ZOOM = 1e8;
 
     /**
      * Default constructor.
