@@ -6,8 +6,12 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
@@ -28,6 +32,7 @@ public class UIPanel extends JPanel {
 
     private void init() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        setBorder(new EmptyBorder(0,5,5,5));
     }
 
     private void initComponents() {
@@ -80,7 +85,21 @@ public class UIPanel extends JPanel {
         topPanel.add(start);
         add(topPanel);
 
+        // extra space goes here
         add(Box.createVerticalGlue());
+
+        // add a separator
+        add(new JSeparator(SwingConstants.HORIZONTAL) {
+            @Override
+            public Dimension getMaximumSize() {
+                Dimension preferredSize = getPreferredSize();
+                preferredSize.width = Integer.MAX_VALUE;
+                return preferredSize;
+            }
+        });
+
+        // space the separator from the bottom
+        add(Box.createVerticalStrut(5));
 
         JPanel bottomPanel = new ShrinkingPanel(false, true);
         bottomPanel.setLayout(new GridBagLayout());

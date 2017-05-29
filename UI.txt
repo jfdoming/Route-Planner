@@ -1,0 +1,5 @@
+1. Press start button.
+2. Choose path type (jcombobox).
+3. Click on globe to place start point. (start point follows mouse until click).
+4. Repeat 2-3 for every point, but paths are drawn between.
+5. Press stop.
