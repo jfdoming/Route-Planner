@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class LinearRouteSegment extends RouteSegment {
 
-    protected Position.PositionList pathPoints;
+    private Position.PositionList pathPoints;
 
     public LinearRouteSegment(Position startPoint, Position endPoint) {
         super(startPoint, endPoint);

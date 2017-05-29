@@ -1,25 +1,24 @@
 package jds_wn_dx.routeplanner.view;
 
-import jds_wn_dx.routeplanner.utils.UIEvents;
-
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
-import java.util.Observable;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.io.File;
 
 /**
  * Route-Planner
  * Waseef Nayeem
  * 29/05/2017
  */
-public class UIPanel extends JPanel implements Observable {
+public class UIPanel extends JPanel {
 
-    private UIEvents events;
-
-    private final int WIDTH = 160, HEIGHT = 600;
-    private GroupLayout layout;
-
-    private String saveFile, loadFile;
     private boolean active;
 
     public UIPanel() {
@@ -28,20 +27,15 @@ public class UIPanel extends JPanel implements Observable {
     }
 
     private void init() {
-        //layout = new GroupLayout(this);
-        //setLayout(layout);
-        //layout.setAutoCreateGaps(true);
-        //layout.setAutoCreateContainerGaps(true);
-
-        setSize(new Dimension(WIDTH, HEIGHT));
-        setBackground(Color.BLACK);
+        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
     }
 
     private void initComponents() {
         JTextField title = new JTextField(10);
+
         JComboBox<String> type = new JComboBox<>();
         type.addItem("LINEAR");
-        type.addItem("ARC");
+        type.addItem("DESCENT");
         JButton start = new JButton("Start");
         JButton save = new JButton("Save");
         JButton load = new JButton("Load");
@@ -62,8 +56,8 @@ public class UIPanel extends JPanel implements Observable {
                     "XML Files", "xml");
             chooser.setFileFilter(filter);
             int returnVal = chooser.showSaveDialog(this);
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
-                saveFile = chooser.getSelectedFile().getAbsolutePath();
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File saveFile = chooser.getSelectedFile();
                 System.out.println(saveFile);
             }
         });
@@ -74,41 +68,30 @@ public class UIPanel extends JPanel implements Observable {
                     "XML Files", "xml");
             chooser.setFileFilter(filter);
             int returnVal = chooser.showOpenDialog(this);
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
-                loadFile = chooser.getSelectedFile().getAbsolutePath();
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File loadFile = chooser.getSelectedFile();
                 System.out.println(loadFile);
             }
         });
 
-        add(title);
-        add(type);
-        add(start);
-        add(save);
-        add(load);
+        JPanel topPanel = new ShrinkingPanel(false, true);
+        topPanel.add(title);
+        topPanel.add(type);
+        topPanel.add(start);
+        add(topPanel);
 
-//        layout.setHorizontalGroup(
-//                layout.createSequentialGroup()
-//                        .addComponent(title)
-//                        .addComponent(type)
-//                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-//                                .addComponent(start)
-//                                .addComponent(load))
-//        );
-//        layout.setVerticalGroup(
-//                layout.createSequentialGroup()
-//                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-//                                .addComponent(title)
-//                                .addComponent(type)
-//                                .addComponent(start))
-//                        .addComponent(load)
-//        );
-    }
+        add(Box.createVerticalGlue());
 
-    public String getLoadPath() {
-        return loadFile;
-    }
+        JPanel bottomPanel = new ShrinkingPanel(false, true);
+        bottomPanel.setLayout(new GridBagLayout());
+        GridBagConstraints cons = new GridBagConstraints();
+        cons.fill = GridBagConstraints.HORIZONTAL;
+        cons.weightx = 1;
+        cons.gridx = GridBagConstraints.RELATIVE;
+        cons.gridy = 0;
 
-    public String getSavePath() {
-        return saveFile;
+        bottomPanel.add(save, cons);
+        bottomPanel.add(load, cons);
+        add(bottomPanel);
     }
 }

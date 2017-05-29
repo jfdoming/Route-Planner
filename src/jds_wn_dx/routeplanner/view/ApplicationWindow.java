@@ -20,6 +20,7 @@ import jds_wn_dx.routeplanner.main.ApplicationConfig;
 import jds_wn_dx.routeplanner.utils.LayerUtils;
 
 import javax.swing.JFrame;
+import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 import java.awt.Color;
 import java.awt.HeadlessException;
@@ -116,7 +117,10 @@ public class ApplicationWindow extends JFrame {
         markerLayer.setMarkers(markers);
         LayerUtils.insertBeforeCompass(wwd, markerLayer);
 
-        getContentPane().add(wwd, java.awt.BorderLayout.CENTER);
-        getContentPane().add(ui, java.awt.BorderLayout.WEST);
+//        getContentPane().add(wwd, BorderLayout.CENTER);
+        JSplitPane contents = new JSplitPane();
+        contents.setLeftComponent(ui);
+        contents.setRightComponent(wwd);
+        getContentPane().add(contents);
     }
 }

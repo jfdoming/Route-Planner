@@ -19,6 +19,8 @@ public class Main {
         config.setTitle(APP_TITLE);
         config.setSize(APP_WIDTH, APP_HEIGHT);
         config.setUsingActiveRendering(false);
+        config.setUsingSystemUI(true);
+
         Application app = new Application(config);
         app.start();
     }
