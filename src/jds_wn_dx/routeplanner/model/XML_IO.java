@@ -40,23 +40,19 @@ public class XML_IO {
     public void getData() {
         try {
             routeTypeList = doc.getElementsByTagName("RouteType");
+            startList = doc.getElementsByTagName("Start");
+            endList = doc.getElementsByTagName("End");
             for (int i = 0; i < routeTypeList.getLength(); i++) {
                 node = routeTypeList.item(i);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     element = (Element) node;
                     routeType.add(i, element.getTextContent());
                 }
-            }
-            startList = doc.getElementsByTagName("Start");
-            for (int i = 0; i < startList.getLength(); i++) {
                 node = startList.item(i);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     element = (Element) node;
                     start.add(i, element.getTextContent());
                 }
-            }
-            endList = doc.getElementsByTagName("End");
-            for (int i = 0; i < endList.getLength(); i++) {
                 node = endList.item(i);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     element = (Element) node;
