@@ -19,12 +19,11 @@ public class LinearRouteSegment extends RouteSegment {
         super(startPoint, endPoint);
     }
 
-    public Position.PositionList buildSegment(Position mousePosition) {
+    public Position.PositionList buildSegment() {
         // cache the result of the path building
         if (pathPoints == null) {
             List<Position> positions = new ArrayList<>(3);
 
-            positions.add(startPoint);
             positions.add(endPoint);
 
             this.pathPoints = new Position.PositionList(positions);

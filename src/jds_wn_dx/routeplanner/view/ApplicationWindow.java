@@ -15,6 +15,7 @@ import gov.nasa.worldwind.render.markers.BasicMarkerAttributes;
 import gov.nasa.worldwind.render.markers.Marker;
 import gov.nasa.worldwind.view.orbit.OrbitView;
 import gov.nasa.worldwind.view.orbit.OrbitViewLimits;
+import jds_wn_dx.routeplanner.controller.UIControlsController;
 import jds_wn_dx.routeplanner.main.AbsentRequirementExceptionListener;
 import jds_wn_dx.routeplanner.main.ApplicationConfig;
 import jds_wn_dx.routeplanner.utils.LayerUtils;
@@ -96,7 +97,9 @@ public class ApplicationWindow extends JFrame {
         Path path = new Path();
         pathLayer.addPath(path);
 
-        wwd.getInputHandler().addMouseMotionListener(new PositionListener(wwd, path));
+        PositionListener positionListener = new PositionListener(wwd, path);
+        wwd.getInputHandler().addMouseMotionListener(positionListener);
+        wwd.getInputHandler().addMouseListener(positionListener);
 
         // Create a path, set some of its properties and set its attributes.
 //        ArrayList<Position> pathPositions = new ArrayList<>();
@@ -122,5 +125,7 @@ public class ApplicationWindow extends JFrame {
         contents.setLeftComponent(ui);
         contents.setRightComponent(wwd);
         getContentPane().add(contents);
+
+        final UIControlsController controller = new UIControlsController(ui);
     }
 }
