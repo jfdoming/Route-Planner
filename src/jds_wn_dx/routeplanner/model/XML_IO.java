@@ -1,12 +1,12 @@
 package jds_wn_dx.routeplanner.model;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -20,6 +20,7 @@ public class XML_IO {
     private NodeList endList;
     private Node node;
     private Element element;
+    // Linear + Descent
     private ArrayList<String> routeType = new ArrayList<String>(0);
     private ArrayList<String> start = new ArrayList<String>(0);
     private ArrayList<String> end = new ArrayList<String>(0);
@@ -40,7 +41,7 @@ public class XML_IO {
     }
 
 
-    public void getData() {
+    public void setData() {
         try {
             routeTypeList = doc.getElementsByTagName("RouteType");
             startList = doc.getElementsByTagName("Start");
@@ -67,10 +68,32 @@ public class XML_IO {
         }
     }
 
+
+
     public void inputFile(File file) {
         try {
             doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void outputFile(ArrayList<String> array, String nameType) {
+        Document document = dBuilder.newDocument();
+        Element rootElement = document.createElement("Document");
+        Attr attrType = document.createAttribute("type");
+        attrType.setValue("FTL");
+        rootElement.setAttributeNode(attrType);
+        document.appendChild(rootElement);
+
+
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(document);
+            StreamResult result = new StreamResult(new File("X:\\test.xml"));
+            transformer.transform(source, result);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,5 +110,7 @@ public class XML_IO {
     public ArrayList<String> getEnd() {
         return end;
     }
+
+
 
 }
