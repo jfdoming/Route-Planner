@@ -14,6 +14,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.ArrayList;
@@ -57,16 +58,6 @@ public class UIPanel extends JPanel {
         JButton saveButton = new JButton("Save");
         JButton loadButton = new JButton("Load");
 
-        startButton.addActionListener(e -> {
-            if (!active) {
-                startButton.setText("Stop");
-                active = true;
-            } else {
-                startButton.setText("Start");
-                active = false;
-            }
-        });
-
         saveButton.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -102,13 +93,6 @@ public class UIPanel extends JPanel {
         topPanel.add(typeComboBox);
         topPanel.add(startButton);
         add(topPanel);
-
-//        JPanel midPanel = new ShrinkingPanel(false, true);
-//        JSlider altitudeSpinner = new JSlider();
-//        altitudeSpinner.setModel(new DefaultBoundedRangeModel());
-//        altitudeSpinner.setModel(new SpinnerNumberModel(6, 6, 10, 1));
-//        midPanel.add(altitudeSpinner);
-//        add(midPanel);
 
         // extra space goes here
         add(Box.createVerticalGlue());
@@ -149,5 +133,17 @@ public class UIPanel extends JPanel {
 
     public void addLoadListener(LoadListener listener) {
         loadListeners.add(listener);
+    }
+
+    public void addStartStopListener(ActionListener actionListener) {
+        startButton.addActionListener(actionListener);
+    }
+
+    public String getTitleValue() {
+        return title.getText();
+    }
+
+    public void setStartStopText(String text) {
+        startButton.setText(text);
     }
 }
