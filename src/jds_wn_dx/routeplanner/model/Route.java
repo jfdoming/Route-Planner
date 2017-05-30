@@ -4,6 +4,7 @@ import gov.nasa.worldwind.geom.Position;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 
 /**
  * Assignment: Route Planner
@@ -13,44 +14,33 @@ import java.util.List;
  */
 public class Route {
 
-    private ArrayList<RouteSegment> children;
-    private Position.PositionList routePoints;
+    private ArrayList<Position> anchorPoints;
+    private List<Position> result;
 
-    public Route() {
-        children = new ArrayList<>();
+    public Route(Position startPosition) {
+        anchorPoints = new ArrayList<>();
+        result = new ArrayList<>();
+
+        result.add(startPosition);
+        anchorPoints.add(startPosition);
     }
 
-    public RouteSegment getLatestSegment() {
-        return children.get(children.size() - 1);
+    public List<Position> extend(Position position, BiFunction<Position, Position, RouteSegment> supplier) {
+        result = predict(position, supplier);
+        anchorPoints.add(position);
+        return result;
     }
 
-    public RouteSegment getSegment(int index) {
-        return children.get(index);
-    }
+    public List<Position> predict(Position position, BiFunction<Position, Position, RouteSegment> supplier) {
+        List<Position> returnValue = new ArrayList<>(result);
 
-    public int getSegmentCount() {
-        return children.size();
-    }
+        if (!anchorPoints.isEmpty()) {
+            Position lastPosition = anchorPoints.get(anchorPoints.size() - 1);
 
-    public void add(RouteSegment routeSegment) {
-        children.add(routeSegment);
-
-        // make sure we rebuild the route point list, as the
-        routePoints = null;
-    }
-
-    public Position.PositionList buildRoute() {
-        // cache the result of the route building
-        if (routePoints == null) {
-            List<Position> list = new ArrayList<>();
-
-            for (RouteSegment child : children) {
-                list.addAll(child.buildSegment(null).list);
-            }
-
-            this.routePoints = new Position.PositionList(list);
+            RouteSegment segment = supplier.apply(lastPosition, position);
+            returnValue.addAll(segment.buildSegment().list);
         }
 
-        return routePoints;
+        return returnValue;
     }
 }

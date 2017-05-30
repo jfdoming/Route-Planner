@@ -1,14 +1,17 @@
-package jds_wn_dx.routeplanner.controller;
+package jds_wn_dx.routeplanner.model;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
 
 public class XML_IO {
 
-    private File file;
     private DocumentBuilderFactory dbFactory;
     private DocumentBuilder dBuilder;
     private Document doc;
@@ -21,7 +24,7 @@ public class XML_IO {
     private ArrayList<String> start = new ArrayList<String>(0);
     private ArrayList<String> end = new ArrayList<String>(0);
 
-    private final String encoding = "UTF-8";
+    private final String ENCODING = "UTF-8";
 
     public XML_IO() {
         initialize();
@@ -64,9 +67,8 @@ public class XML_IO {
         }
     }
 
-    public void inputFile(String name) {
+    public void inputFile(File file) {
         try {
-            file = new File(name);
             doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
         } catch (Exception e) {

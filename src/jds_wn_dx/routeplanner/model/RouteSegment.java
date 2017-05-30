@@ -18,7 +18,7 @@ public abstract class RouteSegment {
         this.endPoint = endPoint;
     }
 
-    public abstract Position.PositionList buildSegment(Position mousePosition);
+    public abstract Position.PositionList buildSegment();
 
     public Position getStartPoint() {
         return startPoint;

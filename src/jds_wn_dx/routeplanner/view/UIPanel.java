@@ -103,6 +103,13 @@ public class UIPanel extends JPanel {
         topPanel.add(startButton);
         add(topPanel);
 
+//        JPanel midPanel = new ShrinkingPanel(false, true);
+//        JSlider altitudeSpinner = new JSlider();
+//        altitudeSpinner.setModel(new DefaultBoundedRangeModel());
+//        altitudeSpinner.setModel(new SpinnerNumberModel(6, 6, 10, 1));
+//        midPanel.add(altitudeSpinner);
+//        add(midPanel);
+
         // extra space goes here
         add(Box.createVerticalGlue());
 
