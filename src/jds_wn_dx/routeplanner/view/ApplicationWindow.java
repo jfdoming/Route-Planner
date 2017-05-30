@@ -42,6 +42,10 @@ public class ApplicationWindow extends JFrame {
     private static final double MIN_ZOOM = 1e5;
     private static final double MAX_ZOOM = 1e8;
 
+    private UIPanel uiPanel;
+    private WorldWindowGLCanvas worldWindowGLCanvas;
+    private Path displayPath;
+
     /**
      * Default constructor.
      * Throws HeadlessException if the peripherals necessary to display and
@@ -75,15 +79,14 @@ public class ApplicationWindow extends JFrame {
      * Configures the contents of the application window and prepares it to be displayed.
      */
     private void initializeWidgets() {
-        WorldWindowGLCanvas wwd = new WorldWindowGLCanvas();
-        UIPanel ui = new UIPanel();
-        wwd.setModel((Model) WorldWind.createConfigurationComponent(AVKey.MODEL_CLASS_NAME));
+        worldWindowGLCanvas = new WorldWindowGLCanvas();
+        worldWindowGLCanvas.setModel((Model) WorldWind.createConfigurationComponent(AVKey.MODEL_CLASS_NAME));
 
         // If an exception occurs, we want to know about it.
-        wwd.addRenderingExceptionListener(new AbsentRequirementExceptionListener());
+        worldWindowGLCanvas.addRenderingExceptionListener(new AbsentRequirementExceptionListener());
 
         // Limit the zoom so the user doesn't break the API.
-        OrbitViewLimits limits = ((OrbitView) wwd.getView()).getOrbitViewLimits();
+        OrbitViewLimits limits = ((OrbitView) worldWindowGLCanvas.getView()).getOrbitViewLimits();
         limits.setZoomLimits(MIN_ZOOM, MAX_ZOOM);
 
         // Specify the colour, shape etc. of lines to be drawn.
@@ -94,12 +97,8 @@ public class ApplicationWindow extends JFrame {
         // Instantiate the layer that holds all paths being drawn.
         PathLayer pathLayer = new PathLayer(attrs);
 
-        Path path = new Path();
-        pathLayer.addPath(path);
-
-        PositionListener positionListener = new PositionListener(wwd, path);
-        wwd.getInputHandler().addMouseMotionListener(positionListener);
-        wwd.getInputHandler().addMouseListener(positionListener);
+        displayPath = new Path();
+        pathLayer.addPath(displayPath);
 
         // Create a path, set some of its properties and set its attributes.
 //        ArrayList<Position> pathPositions = new ArrayList<>();
@@ -108,7 +107,7 @@ public class ApplicationWindow extends JFrame {
 //        Path path = new Path(pathPositions);
 //        pathLayer.addPath(path);
 
-        pathLayer.addTo(wwd);
+        pathLayer.addTo(worldWindowGLCanvas);
 
         BasicMarkerAttributes mAttrs = new BasicMarkerAttributes();
         mAttrs.setMaterial(new Material(Color.WHITE));
@@ -118,14 +117,28 @@ public class ApplicationWindow extends JFrame {
 //        currentPoint = markers.get(0);
         MarkerLayer markerLayer = new MarkerLayer();
         markerLayer.setMarkers(markers);
-        LayerUtils.insertBeforeCompass(wwd, markerLayer);
+        LayerUtils.insertBeforeCompass(worldWindowGLCanvas, markerLayer);
+
+        uiPanel = new UIPanel();
 
 //        getContentPane().add(wwd, BorderLayout.CENTER);
         JSplitPane contents = new JSplitPane();
-        contents.setLeftComponent(ui);
-        contents.setRightComponent(wwd);
+        contents.setLeftComponent(uiPanel);
+        contents.setRightComponent(worldWindowGLCanvas);
         getContentPane().add(contents);
 
-        final UIControlsController controller = new UIControlsController(ui);
+        final UIControlsController controller = new UIControlsController(this);
+    }
+
+    public UIPanel getUiPanel() {
+        return uiPanel;
+    }
+
+    public WorldWindowGLCanvas getWorldWindowGLCanvas() {
+        return worldWindowGLCanvas;
+    }
+
+    public Path getDisplayPath() {
+        return displayPath;
     }
 }

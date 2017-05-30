@@ -25,6 +25,14 @@ public class Route {
         anchorPoints.add(startPosition);
     }
 
+//    public Route(Position startPosition, ArrayList<Position> endPoints) {
+//        anchorPoints = new ArrayList<>();
+//        result = new ArrayList<>();
+//
+//        result.add(startPosition);
+//        anchorPoints.add(startPosition);
+//    }
+
     public List<Position> extend(Position position, BiFunction<Position, Position, RouteSegment> supplier) {
         result = predict(position, supplier);
         anchorPoints.add(position);
