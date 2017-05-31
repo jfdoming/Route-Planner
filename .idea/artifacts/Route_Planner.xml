@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Route Planner">
+    <output-path>$PROJECT_DIR$/out/artifacts/Route_Planner</output-path>
+    <root id="archive" name="Route Planner.jar" />
+  </artifact>
+</component>
