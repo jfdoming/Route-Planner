@@ -25,14 +25,21 @@ import java.io.File;
  */
 public class UIControlsController extends MouseAdapter implements SaveListener, LoadListener, ActionListener {
 
+    // view-related fields
     private final ApplicationWindow window;
     private final UIPanel panel;
     private final WorldWindowGLCanvas wwd;
 
+    // route-related fields
     private Route currentRoute;
     private RouteIO routeIOWrapper;
     private boolean constructingRoute;
 
+    /**
+     * Constructor.
+     *
+     * @param window the window to control
+     */
     public UIControlsController(ApplicationWindow window) {
         this.window = window;
         this.panel = window.getUiPanel();
@@ -52,6 +59,7 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
 
     @Override
     public void onSave(File out) {
+        // writes the data to XML
         String name = panel.getNameValue();
         RouteIO.Data data = new RouteIO.Data(currentRoute, name);
         routeIOWrapper.writeToXML(data, out);
@@ -59,6 +67,7 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
 
     @Override
     public void onLoad(File in) {
+        // obtain the data from XML
         RouteIO.Data data = routeIOWrapper.readFromXML(in);
 
         this.currentRoute = data.getRoute();
@@ -75,8 +84,7 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
 
     @Override
     public void mouseClicked(MouseEvent event) {
-        event.consume();
-
+        // make sure we are currently building the route
         if (!constructingRoute) {
             return;
         }
@@ -84,12 +92,19 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
         Position mousePosition = wwd.getCurrentPosition();
         Path modify = window.getDisplayPath();
 
+        // make sure the user clicked on the globe
         if (mousePosition != null) {
+            // adjust the position the user chose based on the altitude they chose
             mousePosition = new Position(mousePosition, panel.getAltitudeSpinnerValue());
+
+            // try to prevent the globe from turning when the user clicks to place a point
+            event.consume();
+
             if (currentRoute.isStarted()) {
+                // extend the route based on the user-defined point
                 modify.setPositions(currentRoute.extend(mousePosition, panel.getSegmentType()));
-//            window.addMarker(mousePosition);
             } else {
+                // start the route at the user-defined point
                 currentRoute.start(mousePosition);
             }
         }
@@ -97,6 +112,7 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        // make sure we are currently building the route
         if (!constructingRoute) {
             return;
         }
@@ -106,6 +122,7 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
 
         if (mousePosition != null) {
             if (currentRoute.isStarted()) {
+                // predict the extension of the route based on the user-defined point
                 mousePosition = new Position(mousePosition, panel.getAltitudeSpinnerValue());
                 modify.setPositions(currentRoute.predict(mousePosition, panel.getSegmentType()));
             }
@@ -116,6 +133,7 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
     public void actionPerformed(ActionEvent e) {
         // we can be sure the only button here is the start/stop button
 
+        // determine whether to start or stop constructing the route
         if (!constructingRoute) {
             constructingRoute = true;
 
