@@ -89,17 +89,37 @@ public class XML_IO {
     // Outputs a file given the correct information as an XML following the FLT format
     public void outputFile(ArrayList<String> routetype, ArrayList<String> startcoords, ArrayList<String> endcoords, String nameType) {
         Document document = dBuilder.newDocument();
+        // root element
         Element rootElement = document.createElement("Document");
         Attr attrType = document.createAttribute("type");
         attrType.setValue("FTL");
         rootElement.setAttributeNode(attrType);
         document.appendChild(rootElement);
-        //for (int i = 0; i < routetype.size(); i++) {
-         //   Element path = document.createElement("Path");
-         //   rootElement.appendChild(doc.createTextNode(routetype.get(0)));
-        //}
 
+        Element flight = document.createElement("Flight");
+        rootElement.appendChild(flight);
 
+        Element name = document.createElement("Name");
+        name.appendChild(
+            document.createTextNode(nameType));
+        flight.appendChild(name);
+
+        for (int i = 0; i < routetype.size(); i++) {
+            Element path = document.createElement("Path");
+            flight.appendChild(path);
+
+            Element routetypeE = document.createElement("RouteType");
+            routetypeE.appendChild(document.createTextNode(routetype.get(i)));
+            path.appendChild(routetypeE);
+
+            Element startE = document.createElement("Start");
+            startE.appendChild(document.createTextNode(startcoords.get(i)));
+            path.appendChild(startE);
+
+            Element endE = document.createElement("End");
+            endE.appendChild(document.createTextNode(endcoords.get(i)));
+            path.appendChild(endE);
+        }
 
         try {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
