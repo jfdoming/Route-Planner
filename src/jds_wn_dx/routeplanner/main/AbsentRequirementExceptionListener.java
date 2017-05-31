@@ -3,7 +3,7 @@ package jds_wn_dx.routeplanner.main;
 import gov.nasa.worldwind.event.RenderingExceptionListener;
 import gov.nasa.worldwind.exception.WWAbsentRequirementException;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 /**
  * Assignment: Route Planner
@@ -13,6 +13,11 @@ import javax.swing.*;
  */
 public class AbsentRequirementExceptionListener implements RenderingExceptionListener {
 
+    /**
+     * Runs whenever a rendering exception occurs in the World Wind API.
+     *
+     * @param t the throwable that was thrown
+     */
     public void exceptionThrown(Throwable t) {
         if (t instanceof WWAbsentRequirementException) {
             String message = "Computer does not meet minimum graphics requirements.\n";
@@ -20,6 +25,7 @@ public class AbsentRequirementExceptionListener implements RenderingExceptionLis
             message += "Reason: " + t.getMessage() + "\n";
             message += "This program will end when you press OK.";
 
+            // tell the user our message
             JOptionPane.showMessageDialog(null, message, "Unable to Start Program",
                     JOptionPane.ERROR_MESSAGE);
         }

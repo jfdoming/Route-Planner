@@ -10,6 +10,11 @@ import java.io.File;
  */
 public interface LoadListener {
 
+    /**
+     * Loads from the given file.
+     *
+     * @param in the file to read from
+     */
     void onLoad(File in);
 
 }

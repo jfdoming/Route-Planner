@@ -13,32 +13,41 @@ import java.util.List;
  */
 public class DescentRouteSegment extends RouteSegment {
 
+    // the factor before the path fully ascends
     public static final double PATH_INTERPOLATE_AMOUNT = 0.1;
-    protected Position.PositionList pathPoints;
 
+    /**
+     * Constructor.
+     *
+     * @param startPoint the point to start at
+     * @param endPoint the point to end at
+     */
     public DescentRouteSegment(Position startPoint, Position endPoint) {
         super(startPoint, endPoint, RouteSegmentType.DESCENT);
     }
 
+    /**
+     * Builds this segment into a list of positions.
+     *
+     * @return a list of resultant positions
+     */
     public Position.PositionList buildSegment() {
-        // cache the result of the path building
-        if (pathPoints == null) {
-            List<Position> positions = new ArrayList<>(3);
+        List<Position> positions = new ArrayList<>(3);
 
-            Position middlePos;
-            if (startPoint.getElevation() > endPoint.getElevation()) {
-                middlePos = new Position(
-                        Position.interpolateGreatCircle(1 - PATH_INTERPOLATE_AMOUNT, startPoint, endPoint), startPoint.getElevation());
-            } else {
-                middlePos = new Position(
-                        Position.interpolateGreatCircle(PATH_INTERPOLATE_AMOUNT, startPoint, endPoint), endPoint.getElevation());
-            }
-
-            positions.add(middlePos);
-            positions.add(endPoint);
-
-            this.pathPoints = new Position.PositionList(positions);
+        // determine the middle point of the descending segment
+        Position middlePos;
+        if (startPoint.getElevation() > endPoint.getElevation()) {
+            middlePos = new Position(
+                    Position.interpolateGreatCircle(1 - PATH_INTERPOLATE_AMOUNT, startPoint, endPoint), startPoint.getElevation());
+        } else {
+            middlePos = new Position(
+                    Position.interpolateGreatCircle(PATH_INTERPOLATE_AMOUNT, startPoint, endPoint), endPoint.getElevation());
         }
-        return pathPoints;
+
+        // add the last points
+        positions.add(middlePos);
+        positions.add(endPoint);
+
+        return new Position.PositionList(positions);
     }
 }

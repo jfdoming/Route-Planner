@@ -13,21 +13,24 @@ import java.util.List;
  */
 public class LinearRouteSegment extends RouteSegment {
 
-    private Position.PositionList pathPoints;
-
+    /**
+     * Constructor.
+     *
+     * @param startPoint the point to start at
+     * @param endPoint   the point to end at
+     */
     public LinearRouteSegment(Position startPoint, Position endPoint) {
         super(startPoint, endPoint, RouteSegmentType.LINEAR);
     }
 
+    /**
+     * Builds this segment into a list of positions.
+     *
+     * @return a list of resultant positions
+     */
     public Position.PositionList buildSegment() {
-        // cache the result of the path building
-        if (pathPoints == null) {
-            List<Position> positions = new ArrayList<>(3);
-
-            positions.add(endPoint);
-
-            this.pathPoints = new Position.PositionList(positions);
-        }
-        return pathPoints;
+        List<Position> positions = new ArrayList<>(3);
+        positions.add(endPoint);
+        return new Position.PositionList(positions);
     }
 }

@@ -1,6 +1,5 @@
 package jds_wn_dx.routeplanner.main;
 
-import jds_wn_dx.routeplanner.controller.LoopingThread;
 import jds_wn_dx.routeplanner.view.ApplicationWindow;
 
 import javax.swing.JFrame;
@@ -29,9 +28,6 @@ public class Application {
      * Starts this application. This opens the window and starts the background threads.
      */
     public void start() {
-        // declare the background threads to be started as soon as the window opens
-        final LoopingThread updatingLoop = new LoopingThread(new UpdatingLoop(), "updating-loop");
-
         // open our window on the event dispatch thread
         EventQueue.invokeLater(() -> {
             if (config.isUsingSystemUI()) {
@@ -47,16 +43,10 @@ public class Application {
                 public void windowOpened(WindowEvent e) {
                     // attempt to capture focus
                     applicationWindow.requestFocus();
-
-                    // start the application threads
-                    updatingLoop.start();
                 }
 
                 @Override
                 public void windowClosing(WindowEvent e) {
-                    // tell the application threads to stop (blocking)
-                    updatingLoop.stop();
-
                     // close the window
                     applicationWindow.dispose();
                 }

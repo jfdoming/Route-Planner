@@ -10,6 +10,11 @@ import java.io.File;
  */
 public interface SaveListener {
 
+    /**
+     * Saves to the given file.
+     *
+     * @param out the file to save to
+     */
     void onSave(File out);
 
 }

@@ -14,9 +14,15 @@ import gov.nasa.worldwind.layers.placename.PlaceNameLayer;
  */
 public class LayerUtils {
 
+    /**
+     * Inserts a layer into the window before the compass layer.
+     *
+     * @param wwd the window
+     * @param layer the layer to insert
+     */
     public static void insertBeforeCompass(WorldWindow wwd, Layer layer)
     {
-        // Insert the layer into the layer list just before the compass.
+        // insert the layer into the layer list just before the compass
         int compassPosition = 0;
         LayerList layers = wwd.getModel().getLayers();
         for (Layer l : layers)
@@ -27,9 +33,15 @@ public class LayerUtils {
         layers.add(compassPosition, layer);
     }
 
+    /**
+     * Inserts a layer into the window before the placename layer.
+     *
+     * @param wwd the window
+     * @param layer the layer to insert
+     */
     public static void insertBeforePlacenames(WorldWindow wwd, Layer layer)
     {
-        // Insert the layer into the layer list just before the placenames.
+        // insert the layer into the layer list just before the placenames
         int compassPosition = 0;
         LayerList layers = wwd.getModel().getLayers();
         for (Layer l : layers)
@@ -40,9 +52,15 @@ public class LayerUtils {
         layers.add(compassPosition, layer);
     }
 
+    /**
+     * Inserts a layer into the window after the placename layer.
+     *
+     * @param wwd the window
+     * @param layer the layer to insert
+     */
     public static void insertAfterPlacenames(WorldWindow wwd, Layer layer)
     {
-        // Insert the layer into the layer list just after the placenames.
+        // insert the layer into the layer list just after the placenames
         int compassPosition = 0;
         LayerList layers = wwd.getModel().getLayers();
         for (Layer l : layers)
@@ -53,9 +71,16 @@ public class LayerUtils {
         layers.add(compassPosition + 1, layer);
     }
 
+    /**
+     * Inserts a layer into the window before the named layer.
+     *
+     * @param wwd the window
+     * @param layer the layer to insert
+     * @param targetName the name of the layer to insert before
+     */
     public static void insertBeforeLayerName(WorldWindow wwd, Layer layer, String targetName)
     {
-        // Insert the layer into the layer list just before the target layer.
+        // insert the layer into the layer list just before the target layer
         int targetPosition = 0;
         LayerList layers = wwd.getModel().getLayers();
         for (Layer l : layers)

@@ -13,21 +13,41 @@ import java.util.List;
  */
 public class Route {
 
+    // the points used to construct this route
     private List<Position> anchorPoints;
-    private List<Position> result;
+
+    // a list of all the segments forming this route
     private List<RouteSegment> segments;
 
+    // a list of all result points (used for rendering)
+    private List<Position> result;
+
+    /**
+     * Default constructor.
+     */
     public Route() {
         anchorPoints = new ArrayList<>();
-        result = new ArrayList<>();
         segments = new ArrayList<>();
+        result = new ArrayList<>();
     }
 
+    /**
+     * Starts this route at the specified position.
+     *
+     * @param startPosition the position to start the route at
+     */
     public void start(Position startPosition) {
         result.add(startPosition);
         anchorPoints.add(startPosition);
     }
 
+    /**
+     * Extends this route to include a segment to the specified point.
+     *
+     * @param position the position to extend to
+     * @param type     the type of segment to extend
+     * @return the latest result list
+     */
     public List<Position> extend(Position position, RouteSegmentType type) {
         if (anchorPoints.isEmpty()) {
             return null;
@@ -39,6 +59,13 @@ public class Route {
         return result;
     }
 
+    /**
+     * Temporarily extends this route to include a segment to the specified point.
+     *
+     * @param position the position to extend to
+     * @param type     the type of segment to extend
+     * @return the calculated result list
+     */
     public List<Position> predict(Position position, RouteSegmentType type) {
         if (anchorPoints.isEmpty()) {
             return null;
@@ -55,6 +82,8 @@ public class Route {
 
         return returnValue;
     }
+
+    // getters
 
     public boolean isStarted() {
         return !anchorPoints.isEmpty();

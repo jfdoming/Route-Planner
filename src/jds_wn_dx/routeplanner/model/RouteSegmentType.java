@@ -14,12 +14,21 @@ public enum RouteSegmentType {
 
     LINEAR(LinearRouteSegment::new), DESCENT(DescentRouteSegment::new);
 
+    // the constructor used to instantiate a segment of this type
     private final BiFunction<Position, Position, RouteSegment> supplier;
 
-    RouteSegmentType(BiFunction<Position, Position, RouteSegment> supplier) {
+    /**
+     * Constructor.
+     *
+     * @param supplier the constructor to use
+     */
+     RouteSegmentType(BiFunction<Position, Position, RouteSegment> supplier) {
         this.supplier = supplier;
     }
 
+    /**
+     * @return the constructor function
+     */
     public BiFunction<Position, Position, RouteSegment> getSupplier() {
         return supplier;
     }

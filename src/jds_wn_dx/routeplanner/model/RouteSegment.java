@@ -10,18 +10,36 @@ import gov.nasa.worldwind.geom.Position;
  */
 public abstract class RouteSegment {
 
+    // the point this segment starts at
     protected Position startPoint;
+
+    // the point this segment ends at
     protected Position endPoint;
 
+    // the type of this segment
     protected RouteSegmentType type;
 
+    /**
+     * Constructor.
+     *
+     * @param startPoint the point to start at
+     * @param endPoint the point to end at
+     * @param type the type of this segment
+     */
     protected RouteSegment(Position startPoint, Position endPoint, RouteSegmentType type) {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
         this.type = type;
     }
 
+    /**
+     * Builds this segment into a list of positions.
+     *
+     * @return a list of resultant positions
+     */
     public abstract Position.PositionList buildSegment();
+
+    // getters
 
     public Position getStartPoint() {
         return startPoint;

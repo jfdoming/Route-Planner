@@ -1,10 +1,15 @@
 package jds_wn_dx.routeplanner.model;
 
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.*;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
@@ -31,9 +36,9 @@ public class XML_IO {
     private Element element;
     // Linear + Descent
     private String name;
-    private ArrayList<String> routeType = new ArrayList<String>(0);
-    private ArrayList<String> start = new ArrayList<String>(0);
-    private ArrayList<String> end = new ArrayList<String>(0);
+    private ArrayList<String> routeType = new ArrayList<>(0);
+    private ArrayList<String> start = new ArrayList<>(0);
+    private ArrayList<String> end = new ArrayList<>(0);
 
     public XML_IO() {
         initialize();

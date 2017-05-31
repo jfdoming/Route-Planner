@@ -95,8 +95,7 @@ public class ApplicationConfig {
         this.usingActiveRendering = usingActiveRendering;
     }
 
-    public ApplicationConfig setUsingSystemUI(boolean usingSystemUI) {
+    public void setUsingSystemUI(boolean usingSystemUI) {
         this.usingSystemUI = usingSystemUI;
-        return this;
     }
 }
