@@ -1,19 +1,13 @@
 package jds_wn_dx.routeplanner.view;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import jds_wn_dx.routeplanner.controller.LoadListener;
+import jds_wn_dx.routeplanner.controller.SaveListener;
+
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.io.File;
@@ -26,17 +20,24 @@ import java.util.ArrayList;
  */
 public class UIPanel extends JPanel {
 
-    private boolean active;
+    private boolean canSelectPaths;
     private JButton startButton;
     private JTextField title;
+    private JSpinner altitudeSpinner;
+    private SpinnerNumberModel model;
     private JComboBox<String> typeComboBox;
 
     private ArrayList<SaveListener> saveListeners;
     private ArrayList<LoadListener> loadListeners;
 
+    private final double MAX_ALTITUDE = 1e6, MIN_ALTITUDE = 1e1, STEP = 1;
+    private double altitude;
+
     public UIPanel() {
         saveListeners = new ArrayList<>();
         loadListeners = new ArrayList<>();
+
+        altitude = MAX_ALTITUDE;
 
         init();
         initComponents();
@@ -48,11 +49,15 @@ public class UIPanel extends JPanel {
     }
 
     private void initComponents() {
-        title = new JTextField(10);
+        title = new JTextField(25);
 
         typeComboBox = new JComboBox<>();
         typeComboBox.addItem("LINEAR");
         typeComboBox.addItem("DESCENT");
+
+        altitudeSpinner = new JSpinner();
+        model = new SpinnerNumberModel(altitude, MIN_ALTITUDE, MAX_ALTITUDE, STEP);
+        altitudeSpinner.setModel(model);
 
         startButton = new JButton("Start");
         JButton saveButton = new JButton("Save");
@@ -60,8 +65,7 @@ public class UIPanel extends JPanel {
 
         saveButton.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
-            FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                    "XML Files", "xml");
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("XML Files", "xml");
             chooser.setFileFilter(filter);
 
             int returnVal = chooser.showSaveDialog(this);
@@ -75,8 +79,7 @@ public class UIPanel extends JPanel {
 
         loadButton.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
-            FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                    "XML Files", "xml");
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("XML Files", "xml");
             chooser.setFileFilter(filter);
 
             int returnVal = chooser.showOpenDialog(this);
@@ -90,9 +93,13 @@ public class UIPanel extends JPanel {
 
         JPanel topPanel = new ShrinkingPanel(false, true);
         topPanel.add(title);
-        topPanel.add(typeComboBox);
-        topPanel.add(startButton);
         add(topPanel);
+
+        JPanel midPanel = new ShrinkingPanel(false, true);
+        midPanel.add(typeComboBox);
+        midPanel.add(startButton);
+        midPanel.add(altitudeSpinner);
+        add(midPanel);
 
         // extra space goes here
         add(Box.createVerticalGlue());
@@ -135,15 +142,19 @@ public class UIPanel extends JPanel {
         loadListeners.add(listener);
     }
 
-    public void addStartStopListener(ActionListener actionListener) {
-        startButton.addActionListener(actionListener);
+    public void addStartStopListener(ActionListener listener) {
+        startButton.addActionListener(listener);
     }
 
     public String getTitleValue() {
         return title.getText();
     }
 
-    public void setStartStopText(String text) {
-        startButton.setText(text);
+    public double getAltitudeSpinnerValue() {
+        return model.getNumber().intValue();
+    }
+
+    public void setStartStopText(String s) {
+        startButton.setText(s);
     }
 }

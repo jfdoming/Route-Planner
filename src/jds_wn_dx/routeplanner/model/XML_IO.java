@@ -110,7 +110,4 @@ public class XML_IO {
     public ArrayList<String> getEnd() {
         return end;
     }
-
-
-
 }

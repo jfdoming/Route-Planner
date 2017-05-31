@@ -3,12 +3,13 @@ package jds_wn_dx.routeplanner.controller;
 import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.render.Path;
+import gov.nasa.worldwind.render.markers.BasicMarker;
 import jds_wn_dx.routeplanner.model.DescentRouteSegment;
 import jds_wn_dx.routeplanner.model.Route;
 import jds_wn_dx.routeplanner.model.XML_IO;
 import jds_wn_dx.routeplanner.view.ApplicationWindow;
-import jds_wn_dx.routeplanner.view.LoadListener;
-import jds_wn_dx.routeplanner.view.SaveListener;
+import jds_wn_dx.routeplanner.controller.LoadListener;
+import jds_wn_dx.routeplanner.controller.SaveListener;
 import jds_wn_dx.routeplanner.view.UIPanel;
 
 import java.awt.event.ActionEvent;
@@ -31,9 +32,11 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
 
     private Route currentRoute;
 
+    private boolean started;
+
     public UIControlsController(ApplicationWindow window) {
         this.window = window;
-        this.panel = window.getUiPanel();
+        this.panel = window.getUIPanel();
         this.wwd = window.getWorldWindowGLCanvas();
 
         panel.addSaveListener(this);
@@ -52,28 +55,37 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
     public void onLoad(File out) {
         XML_IO io = new XML_IO();
         io.inputFile(out);
-        io.getData();
+        //io.getData();
     }
 
     @Override
     public void mouseClicked(MouseEvent event) {
         event.consume();
 
-        if (currentRoute == null) {
-            return;
-        }
+        if (started) {
+            Position mousePosition = wwd.getCurrentPosition();
+            Path modify = window.getDisplayPath();
 
-        Position mousePosition = wwd.getCurrentPosition();
-        Path modify = window.getDisplayPath();
+            if (currentRoute == null) {
+                Position position = new Position(mousePosition, panel.getAltitudeSpinnerValue());
+                currentRoute = new Route(position);
+                return;
+            }
 
-        if (mousePosition != null) {
-            mousePosition = new Position(mousePosition, 1e6);
-            modify.setPositions(currentRoute.extend(mousePosition, DescentRouteSegment::new));
+            if (mousePosition != null && event.getButton() == MouseEvent.BUTTON1) {
+                mousePosition = new Position(mousePosition, panel.getAltitudeSpinnerValue());
+                modify.setPositions(currentRoute.extend(mousePosition, DescentRouteSegment::new));
+                window.addMarker(new BasicMarker(mousePosition, window.getMarkerAttributes()));
+            }
         }
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        if (!started) {
+            return;
+        }
+
         if (currentRoute == null) {
             return;
         }
@@ -82,7 +94,7 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
         Path modify = window.getDisplayPath();
 
         if (mousePosition != null) {
-            mousePosition = new Position(mousePosition, 1e6);
+            mousePosition = new Position(mousePosition, panel.getAltitudeSpinnerValue());
             modify.setPositions(currentRoute.predict(mousePosition, DescentRouteSegment::new));
         }
     }
@@ -91,11 +103,11 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
     public void actionPerformed(ActionEvent e) {
         // we can be sure the only button here is the start/stop button
 
-        if (currentRoute == null) {
-            currentRoute = new Route(Position.fromDegrees(90, 0, 1e6));
+        if (!started) {
+            started = true;
             panel.setStartStopText("Stop");
         } else {
-            currentRoute = null;
+            started = false;
             panel.setStartStopText("Start");
         }
     }

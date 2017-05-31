@@ -1,4 +1,4 @@
-package jds_wn_dx.routeplanner.view;
+package jds_wn_dx.routeplanner.controller;
 
 import java.io.File;
 
