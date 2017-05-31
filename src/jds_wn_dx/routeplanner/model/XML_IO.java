@@ -23,12 +23,14 @@ public class XML_IO {
     private DocumentBuilderFactory dbFactory;
     private DocumentBuilder dBuilder;
     private Document doc;
+    private NodeList nameList;
     private NodeList routeTypeList;
     private NodeList startList;
     private NodeList endList;
     private Node node;
     private Element element;
     // Linear + Descent
+    private String name;
     private ArrayList<String> routeType = new ArrayList<String>(0);
     private ArrayList<String> start = new ArrayList<String>(0);
     private ArrayList<String> end = new ArrayList<String>(0);
@@ -50,6 +52,8 @@ public class XML_IO {
     // Sets the data, to be called after a file has been loaded so that information is visible to other systems
     public void setData() {
         try {
+            nameList = doc.getElementsByTagName("Name");
+            node = nameList.item(0);
             routeTypeList = doc.getElementsByTagName("RouteType");
             startList = doc.getElementsByTagName("Start");
             endList = doc.getElementsByTagName("End");
@@ -143,6 +147,9 @@ public class XML_IO {
 
     public ArrayList<String> getEnd() {
         return end;
+    }
+    public String getName() {
+        
     }
 
 
