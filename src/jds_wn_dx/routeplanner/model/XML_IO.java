@@ -149,7 +149,7 @@ public class XML_IO {
         return end;
     }
     public String getName() {
-        
+        return name;
     }
 
 
