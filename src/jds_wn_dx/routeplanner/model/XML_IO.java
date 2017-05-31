@@ -54,6 +54,10 @@ public class XML_IO {
         try {
             nameList = doc.getElementsByTagName("Name");
             node = nameList.item(0);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                element = (Element) node;
+                name = element.getTextContent();
+            }
             routeTypeList = doc.getElementsByTagName("RouteType");
             startList = doc.getElementsByTagName("Start");
             endList = doc.getElementsByTagName("End");
@@ -149,7 +153,7 @@ public class XML_IO {
         return end;
     }
     public String getName() {
-        return name;
+        return name
     }
 
 
