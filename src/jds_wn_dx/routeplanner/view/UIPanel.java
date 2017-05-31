@@ -151,8 +151,8 @@ public class UIPanel extends JPanel {
 
         // Organize middle panel
         JPanel midPanel = new ShrinkingPanel(false, true);
-        midPanel.add(clearButton);
         midPanel.add(startButton);
+        midPanel.add(clearButton);
         midPanel.add(altitudeSpinner);
         add(midPanel);
 
