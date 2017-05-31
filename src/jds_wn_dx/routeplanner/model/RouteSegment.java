@@ -7,6 +7,8 @@ import gov.nasa.worldwind.geom.Position;
  * Author: Julian Dominguez-Schatz
  * Date: 18/05/2017
  * Description: Represents part of a route the user has chosen in our application.
+ *
+ * This object is a model object.
  */
 public abstract class RouteSegment {
 

@@ -10,9 +10,11 @@ import jds_wn_dx.routeplanner.utils.LayerUtils;
 
 /**
  * Assignment: Route Planner
- * Author: Julian Dominguez-Schatz
+ * Author: Waseef Nayeem
  * Date: 09/05/2017
  * Description: Represents a layer that contains all paths in our application.
+ *
+ * This object is a view object.
  */
 public class PathLayer {
 

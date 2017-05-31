@@ -18,7 +18,10 @@ import java.io.File;
  * Assignment: Route Planner
  * Author: Danny Xu
  * Date: 2017-05-29
- * Description: Controls our application.
+ * Description: Controls our application. It adds its own listeners so it can respond to
+ * various events and user actions.
+ *
+ * This object is a controller object.
  */
 public class UIControlsController extends MouseAdapter implements SaveListener, LoadListener, ActionListener {
 

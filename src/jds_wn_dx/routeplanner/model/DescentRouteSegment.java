@@ -10,11 +10,13 @@ import java.util.List;
  * Author: Julian Dominguez-Schatz
  * Date: 18/05/2017
  * Description: Represents a descending part of a route the user has chosen in our application.
+ *
+ * This object is a model object.
  */
 public class DescentRouteSegment extends RouteSegment {
 
     // the factor before the path fully ascends
-    public static final double PATH_INTERPOLATE_AMOUNT = 0.1;
+    private static final double PATH_INTERPOLATE_AMOUNT = 0.1;
 
     /**
      * Constructor.

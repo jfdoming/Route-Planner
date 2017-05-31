@@ -7,6 +7,8 @@ import java.io.File;
  * Author: Julian Dominguez-Schatz
  * Date: 2017-05-29
  * Description: Represents an object which is notified when the user attempts to load.
+ *
+ * This object is a controller object.
  */
 public interface LoadListener {
 

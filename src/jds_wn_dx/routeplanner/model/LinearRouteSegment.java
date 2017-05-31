@@ -10,6 +10,8 @@ import java.util.List;
  * Author: Julian Dominguez-Schatz
  * Date: 18/05/2017
  * Description: Represents a linear part of a route the user has chosen in our application.
+ *
+ * This object is a model object.
  */
 public class LinearRouteSegment extends RouteSegment {
 

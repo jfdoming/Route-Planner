@@ -5,9 +5,11 @@ import java.awt.Dimension;
 
 /**
  * Assignment: Route Planner
- * Author: Julian Dominguez-Schatz
+ * Author: Waseef Nayeem
  * Date: 2017-05-29
  * Description: Represents a JPanel that will only fill as much space as it needs.
+ *
+ * This object is a view object.
  */
 public class ShrinkingPanel extends JPanel {
 

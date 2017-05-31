@@ -9,6 +9,8 @@ import java.util.function.BiFunction;
  * Author: Julian Dominguez-Schatz
  * Date: 2017-05-30
  * Description: Represents various types of segments.
+ *
+ * This object is a model object.
  */
 public enum RouteSegmentType {
 

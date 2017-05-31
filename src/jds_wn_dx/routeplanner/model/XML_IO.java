@@ -19,7 +19,9 @@ import java.util.ArrayList;
  * Assignment: Route Planner
  * Author: Danny Xu
  * Date: 30/05/2017
- * Description: Handles all of the XML I/O subsystems
+ * Description: Handles all of the XML I/O subsystems.
+ *
+ * This object is a model object.
  */
 
 public class XML_IO {

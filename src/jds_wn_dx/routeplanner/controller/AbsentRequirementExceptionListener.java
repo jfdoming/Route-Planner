@@ -1,4 +1,4 @@
-package jds_wn_dx.routeplanner.main;
+package jds_wn_dx.routeplanner.controller;
 
 import gov.nasa.worldwind.event.RenderingExceptionListener;
 import gov.nasa.worldwind.exception.WWAbsentRequirementException;
@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
  * Author: Julian Dominguez-Schatz
  * Date: 09/05/2017
  * Description: Provides user feedback if a system does not support the World Wind API.
+ *
+ * This object is a controller object.
  */
 public class AbsentRequirementExceptionListener implements RenderingExceptionListener {
 

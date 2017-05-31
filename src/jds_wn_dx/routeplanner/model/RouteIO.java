@@ -12,6 +12,8 @@ import java.util.List;
  * Author: Julian Dominguez-Schatz
  * Date: 2017-05-30
  * Description: Represents a class that manages I/O operations for a route.
+ *
+ * This object is a model object.
  */
 public class RouteIO {
 
