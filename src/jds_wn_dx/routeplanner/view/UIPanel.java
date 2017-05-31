@@ -1,5 +1,6 @@
 package jds_wn_dx.routeplanner.view;
 
+import jds_wn_dx.routeplanner.controller.ClearListener;
 import jds_wn_dx.routeplanner.controller.LoadListener;
 import jds_wn_dx.routeplanner.controller.SaveListener;
 import jds_wn_dx.routeplanner.model.RouteSegmentType;
@@ -37,21 +38,29 @@ import java.util.ArrayList;
 public class UIPanel extends JPanel {
 
     // text used on the start/stop button
-    public static final String START_TEXT = "Start";
-    public static final String STOP_TEXT = "Stop";
+    public static final String START_TEXT = "Start Route";
+    public static final String STOP_TEXT = "Stop Route";
+    public static final String CLEAR_TEXT = "Clear Route";
 
+    // UI Widgets
     private JButton startButton;
+    private JButton clearButton;
     private JTextField name;
     private JComboBox<RouteSegmentType> typeComboBox;
     private JSpinner altitudeSpinner;
     private SpinnerNumberModel model;
 
+    // Lists of listeners
     private ArrayList<SaveListener> saveListeners;
     private ArrayList<LoadListener> loadListeners;
 
     private final double MAX_ALTITUDE = 1e6, MIN_ALTITUDE = 1e1, STEP = 1;
     private double altitude;
+    private Runnable clearAction;
 
+    /**
+     *  Default Constructor
+     * */
     public UIPanel() {
         saveListeners = new ArrayList<>();
         loadListeners = new ArrayList<>();
@@ -62,11 +71,17 @@ public class UIPanel extends JPanel {
         initComponents();
     }
 
+    /**
+     *  Initializes the panel
+     * */
     private void init() {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setBorder(new EmptyBorder(0,5,5,5));
     }
 
+    /**
+     *  Initializes the JComponents on the panel
+     * */
     private void initComponents() {
         name = new JTextField(10);
         JLabel nameLabel = new JLabel("Name:");
@@ -76,6 +91,7 @@ public class UIPanel extends JPanel {
         typeComboBox.addItem(RouteSegmentType.LINEAR);
         typeComboBox.addItem(RouteSegmentType.DESCENT);
 
+        clearButton = new JButton(CLEAR_TEXT);
         startButton = new JButton(START_TEXT);
 
         altitudeSpinner = new JSpinner();
@@ -126,23 +142,24 @@ public class UIPanel extends JPanel {
             }
         });
 
+        // Organize top panel
         JPanel topPanel = new ShrinkingPanel(false, true);
         topPanel.add(nameLabel);
         topPanel.add(name);
         topPanel.add(typeComboBox);
-        topPanel.add(startButton);
         add(topPanel);
 
+        // Organize middle panel
         JPanel midPanel = new ShrinkingPanel(false, true);
-        midPanel.add(typeComboBox);
+        midPanel.add(clearButton);
         midPanel.add(startButton);
         midPanel.add(altitudeSpinner);
         add(midPanel);
 
-        // extra space goes here
+        // Extra space goes here
         add(Box.createVerticalGlue());
 
-        // add a separator
+        // Add a separator
         add(new JSeparator(SwingConstants.HORIZONTAL) {
             @Override
             public Dimension getMaximumSize() {
@@ -152,9 +169,10 @@ public class UIPanel extends JPanel {
             }
         });
 
-        // space the separator from the bottom
+        // Space the separator from the bottom
         add(Box.createVerticalStrut(5));
 
+        // Organize bottom panel
         JPanel bottomPanel = new ShrinkingPanel(false, true);
         bottomPanel.setLayout(new GridBagLayout());
         GridBagConstraints cons = new GridBagConstraints();
@@ -168,34 +186,65 @@ public class UIPanel extends JPanel {
         add(bottomPanel);
     }
 
+    /**
+     *  Adds a listener to the saveListener list
+     * */
     public void addSaveListener(SaveListener listener) {
         saveListeners.add(listener);
     }
 
+    /**
+     *  Adds a listener to the loadListener list
+     * */
     public void addLoadListener(LoadListener listener) {
         loadListeners.add(listener);
     }
 
+    /**
+     *  Adds a listener to the start/stop button
+     * */
     public void addStartStopListener(ActionListener listener) {
         startButton.addActionListener(listener);
     }
 
+    /**
+     *  Adds a listener to the route clear button
+     * */
+    public void addClearListener(ClearListener listener) {
+        clearButton.addActionListener(e -> listener.onClear());
+    }
+
+    /**
+     *  Gets the value from the altitude spinner
+     * */
     public double getAltitudeSpinnerValue() {
         return model.getNumber().intValue();
     }
 
+    /**
+     *  Sets the text of the start/stop button
+     * */
     public void setStartStopText(String s) {
         startButton.setText(s);
     }
 
+    /**
+     *  Sets the text of the name text field
+     * */
     public void setNameValue(String s) {
         name.setText(s);
     }
 
+    /**
+     *  Gets the text from the name text field
+     * */
     public String getNameValue() {
         return name.getText();
     }
 
+    /**
+     *  Gets the type of route selected from the combo box
+     * */
     public RouteSegmentType getSegmentType() {
         return (RouteSegmentType) typeComboBox.getSelectedItem();
     }

@@ -102,13 +102,6 @@ public class ApplicationWindow extends JFrame {
         displayPath = new Path();
         pathLayer.addPath(displayPath);
 
-        // Create a path, set some of its properties and set its attributes.
-//        ArrayList<Position> pathPositions = new ArrayList<>();
-//        pathPositions.add(Position.fromDegrees(28, -102, 1e5));
-//        pathPositions.add(Position.fromDegrees(100, -100, 1e5));
-//        Path path = new Path(pathPositions);
-//        pathLayer.addPath(path);
-
         pathLayer.addTo(worldWindowGLCanvas);
 
         markerAttributes = new BasicMarkerAttributes();
@@ -129,18 +122,30 @@ public class ApplicationWindow extends JFrame {
         final UIControlsController controller = new UIControlsController(this);
     }
 
+    /**
+     *  Gets UI Panel component
+     * */
     public UIPanel getUiPanel() {
         return uiPanel;
     }
 
+    /**
+     *  Gets WorldWindGLCanvas component
+     * */
     public WorldWindowGLCanvas getWorldWindowGLCanvas() {
         return worldWindowGLCanvas;
     }
 
+    /**
+     *  Gets the current path that is displayed
+     * */
     public Path getDisplayPath() {
         return displayPath;
     }
 
+    /**
+     *  Adds a marker to the globe
+     * */
     public void addMarker(Position toAdd) {
         markers.add(new BasicMarker(toAdd, markerAttributes));
     }

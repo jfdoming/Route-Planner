@@ -9,8 +9,8 @@ package jds_wn_dx.routeplanner.main;
 public class Main {
 
     // constants related to application initialization
-    private static final int APP_WIDTH = 800;
-    private static final int APP_HEIGHT = 600;
+    private static final int APP_WIDTH = 1024;
+    private static final int APP_HEIGHT = 768;
     private static final String APP_TITLE = "Route Planner";
 
     private static final boolean USING_ACTIVE_RENDERING = false;
