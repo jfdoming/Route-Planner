@@ -23,7 +23,7 @@ import java.io.File;
  *
  * This object is a controller object.
  */
-public class UIControlsController extends MouseAdapter implements SaveListener, LoadListener, ActionListener {
+public class UIControlsController extends MouseAdapter implements SaveListener, LoadListener, ActionListener, ClearListener {
 
     // view-related fields
     private final ApplicationWindow window;
@@ -53,8 +53,23 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
         panel.addSaveListener(this);
         panel.addLoadListener(this);
         panel.addStartStopListener(this);
+        panel.addClearListener(this);
         wwd.addMouseListener(this);
         wwd.addMouseMotionListener(this);
+    }
+
+    @Override
+    public void onClear() {
+        this.currentRoute = new Route();
+        this.constructingRoute = false;
+
+        // update the view
+        Path modify = window.getDisplayPath();
+        modify.setPositions(currentRoute.getResult());
+        panel.setStartStopText(UIPanel.START_TEXT);
+
+        // make sure the world window is updated
+        wwd.redraw();
     }
 
     @Override
@@ -131,7 +146,7 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // we can be sure the only button here is the start/stop button
+        // We can be sure the only button here is the start/stop button
 
         // determine whether to start or stop constructing the route
         if (!constructingRoute) {
