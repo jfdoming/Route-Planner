@@ -13,7 +13,6 @@ import gov.nasa.worldwind.render.ShapeAttributes;
 import gov.nasa.worldwind.render.markers.BasicMarker;
 import gov.nasa.worldwind.render.markers.BasicMarkerAttributes;
 import gov.nasa.worldwind.render.markers.Marker;
-import gov.nasa.worldwind.render.markers.MarkerAttributes;
 import gov.nasa.worldwind.view.orbit.OrbitView;
 import gov.nasa.worldwind.view.orbit.OrbitViewLimits;
 import jds_wn_dx.routeplanner.controller.UIControlsController;
@@ -31,11 +30,11 @@ import java.util.List;
 
 /**
  * Assignment: Route Planner
- * Author: Julian Dominguez-Schatz
+ * Author: Waseef Nayeem
  * Date: 07/05/2017
  * Description: Represents the window that the application is rendered into. It autonomously configures the application
  * window, but needs to be instantiated and shown via setVisible(true) on the AWT Event Queue.
- * <p>
+ *
  * This object is a view object.
  */
 public class ApplicationWindow extends JFrame {
@@ -43,13 +42,11 @@ public class ApplicationWindow extends JFrame {
     private static final double MIN_ZOOM = 1e5;
     private static final double MAX_ZOOM = 1e8;
 
-    private WorldWindowGLCanvas wwd;
-    private UIPanel ui;
-
-    private Path path;
+    private UIPanel uiPanel;
+    private WorldWindowGLCanvas worldWindowGLCanvas;
+    private Path displayPath;
     private List<Marker> markers;
-
-    private BasicMarkerAttributes mAttrs;
+    private BasicMarkerAttributes markerAttributes;
 
     /**
      * Default constructor.
@@ -84,15 +81,14 @@ public class ApplicationWindow extends JFrame {
      * Configures the contents of the application window and prepares it to be displayed.
      */
     private void initializeWidgets() {
-        wwd = new WorldWindowGLCanvas();
-        ui = new UIPanel();
-        wwd.setModel((Model) WorldWind.createConfigurationComponent(AVKey.MODEL_CLASS_NAME));
+        worldWindowGLCanvas = new WorldWindowGLCanvas();
+        worldWindowGLCanvas.setModel((Model) WorldWind.createConfigurationComponent(AVKey.MODEL_CLASS_NAME));
 
         // If an exception occurs, we want to know about it.
-        wwd.addRenderingExceptionListener(new AbsentRequirementExceptionListener());
+        worldWindowGLCanvas.addRenderingExceptionListener(new AbsentRequirementExceptionListener());
 
         // Limit the zoom so the user doesn't break the API.
-        OrbitViewLimits limits = ((OrbitView) wwd.getView()).getOrbitViewLimits();
+        OrbitViewLimits limits = ((OrbitView) worldWindowGLCanvas.getView()).getOrbitViewLimits();
         limits.setZoomLimits(MIN_ZOOM, MAX_ZOOM);
 
         // Specify the colour, shape etc. of lines to be drawn.
@@ -103,46 +99,49 @@ public class ApplicationWindow extends JFrame {
         // Instantiate the layer that holds all paths being drawn.
         PathLayer pathLayer = new PathLayer(attrs);
 
-        // Create a path
-        path = new Path();
-        pathLayer.addPath(path);
-        pathLayer.addTo(wwd);
+        displayPath = new Path();
+        pathLayer.addPath(displayPath);
 
-        // Set material for markers
-        mAttrs = new BasicMarkerAttributes();
-        mAttrs.setMaterial(new Material(Color.RED));
+        // Create a path, set some of its properties and set its attributes.
+//        ArrayList<Position> pathPositions = new ArrayList<>();
+//        pathPositions.add(Position.fromDegrees(28, -102, 1e5));
+//        pathPositions.add(Position.fromDegrees(100, -100, 1e5));
+//        Path path = new Path(pathPositions);
+//        pathLayer.addPath(path);
+
+        pathLayer.addTo(worldWindowGLCanvas);
+
+        markerAttributes = new BasicMarkerAttributes();
+        markerAttributes.setMaterial(new Material(Color.WHITE));
 
         markers = new ArrayList<>();
-
         MarkerLayer markerLayer = new MarkerLayer();
         markerLayer.setMarkers(markers);
-        LayerUtils.insertBeforeCompass(wwd, markerLayer);
+        LayerUtils.insertBeforeCompass(worldWindowGLCanvas, markerLayer);
+
+        uiPanel = new UIPanel();
 
         JSplitPane contents = new JSplitPane();
-        contents.setLeftComponent(ui);
-        contents.setRightComponent(wwd);
+        contents.setLeftComponent(uiPanel);
+        contents.setRightComponent(worldWindowGLCanvas);
         getContentPane().add(contents);
 
         final UIControlsController controller = new UIControlsController(this);
     }
 
-    public UIPanel getUIPanel() {
-        return ui;
+    public UIPanel getUiPanel() {
+        return uiPanel;
     }
 
     public WorldWindowGLCanvas getWorldWindowGLCanvas() {
-        return wwd;
+        return worldWindowGLCanvas;
     }
 
     public Path getDisplayPath() {
-        return path;
+        return displayPath;
     }
 
-    public MarkerAttributes getMarkerAttributes() {
-        return mAttrs;
-    }
-
-    public void addMarker(Marker m) {
-        markers.add(m);
+    public void addMarker(Position toAdd) {
+        markers.add(new BasicMarker(toAdd, markerAttributes));
     }
 }

@@ -2,13 +2,13 @@
 <Document Type="FTL">
     <Name>TestName</Name>
     <Path>
-        <RouteType>TestRouteType</RouteType>
-        <Start>StartCoords</Start>
-        <End>EndCoords</End>
+        <RouteType>LINEAR</RouteType>
+        <Start>90.453, 70.655, 60300</Start>
+        <End>90.453, 50.655, 60300</End>
     </Path>
     <Path>
-        <RouteType>TestRouteType2</RouteType>
-        <Start>StartCoords2</Start>
-        <End>EndCoords2</End>
+        <RouteType>DESCENT</RouteType>
+        <Start>90.453, 50.655, 60300</Start>
+        <End>60.453, 50.655, 40500</End>
     </Path>
 </Document>

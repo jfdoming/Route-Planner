@@ -10,6 +10,6 @@ import java.io.File;
  */
 public interface LoadListener {
 
-    void onLoad(File out);
+    void onLoad(File in);
 
 }

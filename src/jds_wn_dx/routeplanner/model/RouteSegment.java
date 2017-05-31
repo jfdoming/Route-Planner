@@ -13,9 +13,12 @@ public abstract class RouteSegment {
     protected Position startPoint;
     protected Position endPoint;
 
-    public RouteSegment(Position startPoint, Position endPoint) {
+    protected RouteSegmentType type;
+
+    protected RouteSegment(Position startPoint, Position endPoint, RouteSegmentType type) {
         this.startPoint = startPoint;
         this.endPoint = endPoint;
+        this.type = type;
     }
 
     public abstract Position.PositionList buildSegment();
@@ -26,5 +29,9 @@ public abstract class RouteSegment {
 
     public Position getEndPoint() {
         return endPoint;
+    }
+
+    public RouteSegmentType getType() {
+        return type;
     }
 }

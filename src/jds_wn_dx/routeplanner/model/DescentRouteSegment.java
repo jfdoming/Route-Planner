@@ -17,7 +17,7 @@ public class DescentRouteSegment extends RouteSegment {
     protected Position.PositionList pathPoints;
 
     public DescentRouteSegment(Position startPoint, Position endPoint) {
-        super(startPoint, endPoint);
+        super(startPoint, endPoint, RouteSegmentType.DESCENT);
     }
 
     public Position.PositionList buildSegment() {
