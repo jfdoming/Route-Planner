@@ -6,8 +6,6 @@ import gov.nasa.worldwind.render.Path;
 import jds_wn_dx.routeplanner.model.Route;
 import jds_wn_dx.routeplanner.model.RouteIO;
 import jds_wn_dx.routeplanner.view.ApplicationWindow;
-import jds_wn_dx.routeplanner.view.LoadListener;
-import jds_wn_dx.routeplanner.view.SaveListener;
 import jds_wn_dx.routeplanner.view.UIPanel;
 
 import java.awt.event.ActionEvent;
@@ -51,7 +49,7 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
 
     @Override
     public void onSave(File out) {
-        String name = panel.getNameValue();
+        String name = panel.getTitleValue();
         RouteIO.Data data = new RouteIO.Data(currentRoute, name);
         routeIOWrapper.writeToXML(data, out);
     }
@@ -61,7 +59,7 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
         RouteIO.Data data = routeIOWrapper.readFromXML(in);
 
         this.currentRoute = data.getRoute();
-        panel.setNameValue(data.getName());
+        panel.setTitleValue(data.getName());
 
         // update the view
         panel.setStartStopText(UIPanel.START_TEXT);
@@ -84,7 +82,7 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
         Path modify = window.getDisplayPath();
 
         if (mousePosition != null) {
-            mousePosition = new Position(mousePosition, 1e6);
+            mousePosition = new Position(mousePosition, panel.getAltitudeSpinnerValue());
             if (currentRoute.isStarted()) {
                 modify.setPositions(currentRoute.extend(mousePosition, panel.getSegmentType()));
 //            window.addMarker(mousePosition);
@@ -105,7 +103,7 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
 
         if (mousePosition != null) {
             if (currentRoute.isStarted()) {
-                mousePosition = new Position(mousePosition, 1e6);
+                mousePosition = new Position(mousePosition, panel.getAltitudeSpinnerValue());
                 modify.setPositions(currentRoute.predict(mousePosition, panel.getSegmentType()));
             }
         }

@@ -42,7 +42,6 @@ public class UIPanel extends JPanel {
     private JTextField title;
     private JSpinner altitudeSpinner;
     private SpinnerNumberModel model;
-    private JComboBox<String> typeComboBox;
 
     private ArrayList<SaveListener> saveListeners;
     private ArrayList<LoadListener> loadListeners;
@@ -154,10 +153,6 @@ public class UIPanel extends JPanel {
         add(bottomPanel);
     }
 
-    public void addItemListener(ItemListener aListener) {
-        typeComboBox.addItemListener(aListener);
-    }
-
     public void addSaveListener(SaveListener listener) {
         saveListeners.add(listener);
     }
@@ -180,5 +175,13 @@ public class UIPanel extends JPanel {
 
     public void setStartStopText(String s) {
         startButton.setText(s);
+    }
+
+    public void setTitleValue(String s) {
+        title.setText(s);
+    }
+
+    public RouteSegmentType getSegmentType() {
+        return (RouteSegmentType) typeComboBox.getSelectedItem();
     }
 }
