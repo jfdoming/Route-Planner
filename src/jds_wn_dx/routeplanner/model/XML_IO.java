@@ -87,7 +87,7 @@ public class XML_IO {
     }
 
     // Outputs a file given the correct information as an XML following the FLT format
-    public void outputFile(ArrayList<String> routetype, ArrayList<String> startcoords, ArrayList<String> endcoords, String nameType, String location) {
+    public void outputFile(ArrayList<String> routetype, ArrayList<String> startcoords, ArrayList<String> endcoords, String nameType, File location) {
         Document document = dBuilder.newDocument();
         // root element
         Element rootElement = document.createElement("Document");
@@ -125,7 +125,7 @@ public class XML_IO {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(document);
-            StreamResult result = new StreamResult(new File(location));
+            StreamResult result = new StreamResult(location);
             transformer.transform(source, result);
         } catch (Exception e) {
             e.printStackTrace();
