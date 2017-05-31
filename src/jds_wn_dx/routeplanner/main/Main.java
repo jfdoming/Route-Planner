@@ -1,7 +1,5 @@
 package jds_wn_dx.routeplanner.main;
 
-import gov.nasa.worldwindx.examples.LineBuilder;
-
 /**
  * Assignment: Route Planner
  * Author: Julian Dominguez-Schatz

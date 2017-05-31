@@ -26,9 +26,13 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * Route-Planner
- * Waseef Nayeem
- * 29/05/2017
+ * Assignment: Route Planner
+ * Author: Waseef Nayeem
+ * Date: 13/05/2017
+ * Description: Represents the portion of the screen that contains the GUI. The user interacts with this part of the
+ * application and there are widgets on the UIPanel that the user can interact with.
+ *
+ * This object is a view object.
  */
 public class UIPanel extends JPanel {
 
@@ -73,6 +77,7 @@ public class UIPanel extends JPanel {
         typeComboBox.addItem(RouteSegmentType.DESCENT);
 
         startButton = new JButton(START_TEXT);
+
         altitudeSpinner = new JSpinner();
         model = new SpinnerNumberModel(altitude, MIN_ALTITUDE, MAX_ALTITUDE, STEP);
         altitudeSpinner.setModel(model);
