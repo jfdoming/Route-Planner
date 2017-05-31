@@ -4,7 +4,6 @@ import gov.nasa.worldwind.geom.Position;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiFunction;
 
 /**
  * Assignment: Route Planner
@@ -14,41 +13,58 @@ import java.util.function.BiFunction;
  */
 public class Route {
 
-    private ArrayList<Position> anchorPoints;
+    private List<Position> anchorPoints;
     private List<Position> result;
+    private List<RouteSegment> segments;
 
-    public Route(Position startPosition) {
+    public Route() {
         anchorPoints = new ArrayList<>();
         result = new ArrayList<>();
+        segments = new ArrayList<>();
+    }
 
+    public void start(Position startPosition) {
         result.add(startPosition);
         anchorPoints.add(startPosition);
     }
 
-//    public Route(Position startPosition, ArrayList<Position> endPoints) {
-//        anchorPoints = new ArrayList<>();
-//        result = new ArrayList<>();
-//
-//        result.add(startPosition);
-//        anchorPoints.add(startPosition);
-//    }
+    public List<Position> extend(Position position, RouteSegmentType type) {
+        if (anchorPoints.isEmpty()) {
+            return null;
+        }
 
-    public List<Position> extend(Position position, BiFunction<Position, Position, RouteSegment> supplier) {
-        result = predict(position, supplier);
+        result = predict(position, type);
+        segments.add(type.getSupplier().apply(anchorPoints.get(anchorPoints.size() - 1), position));
         anchorPoints.add(position);
         return result;
     }
 
-    public List<Position> predict(Position position, BiFunction<Position, Position, RouteSegment> supplier) {
+    public List<Position> predict(Position position, RouteSegmentType type) {
+        if (anchorPoints.isEmpty()) {
+            return null;
+        }
+
         List<Position> returnValue = new ArrayList<>(result);
 
         if (!anchorPoints.isEmpty()) {
             Position lastPosition = anchorPoints.get(anchorPoints.size() - 1);
 
-            RouteSegment segment = supplier.apply(lastPosition, position);
+            RouteSegment segment = type.getSupplier().apply(lastPosition, position);
             returnValue.addAll(segment.buildSegment().list);
         }
 
         return returnValue;
+    }
+
+    public boolean isStarted() {
+        return !anchorPoints.isEmpty();
+    }
+
+    public List<RouteSegment> getSegments() {
+        return segments;
+    }
+
+    public List<Position> getResult() {
+        return result;
     }
 }

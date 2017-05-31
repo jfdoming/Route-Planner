@@ -16,7 +16,7 @@ public class LinearRouteSegment extends RouteSegment {
     private Position.PositionList pathPoints;
 
     public LinearRouteSegment(Position startPoint, Position endPoint) {
-        super(startPoint, endPoint);
+        super(startPoint, endPoint, RouteSegmentType.LINEAR);
     }
 
     public Position.PositionList buildSegment() {

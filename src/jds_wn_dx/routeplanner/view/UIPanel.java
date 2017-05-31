@@ -1,10 +1,13 @@
 package jds_wn_dx.routeplanner.view;
 
+import jds_wn_dx.routeplanner.model.RouteSegmentType;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -15,7 +18,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -26,10 +28,14 @@ import java.util.ArrayList;
  */
 public class UIPanel extends JPanel {
 
+    // text used on the start/stop button
+    public static final String START_TEXT = "Start";
+    public static final String STOP_TEXT = "Stop";
+
     private boolean active;
     private JButton startButton;
-    private JTextField title;
-    private JComboBox<String> typeComboBox;
+    private JTextField name;
+    private JComboBox<RouteSegmentType> typeComboBox;
 
     private ArrayList<SaveListener> saveListeners;
     private ArrayList<LoadListener> loadListeners;
@@ -48,13 +54,15 @@ public class UIPanel extends JPanel {
     }
 
     private void initComponents() {
-        title = new JTextField(10);
+        name = new JTextField(10);
+        JLabel nameLabel = new JLabel("Name:");
+        nameLabel.setLabelFor(name);
 
         typeComboBox = new JComboBox<>();
-        typeComboBox.addItem("LINEAR");
-        typeComboBox.addItem("DESCENT");
+        typeComboBox.addItem(RouteSegmentType.LINEAR);
+        typeComboBox.addItem(RouteSegmentType.DESCENT);
 
-        startButton = new JButton("Start");
+        startButton = new JButton(START_TEXT);
         JButton saveButton = new JButton("Save");
         JButton loadButton = new JButton("Load");
 
@@ -89,7 +97,8 @@ public class UIPanel extends JPanel {
         });
 
         JPanel topPanel = new ShrinkingPanel(false, true);
-        topPanel.add(title);
+        topPanel.add(nameLabel);
+        topPanel.add(name);
         topPanel.add(typeComboBox);
         topPanel.add(startButton);
         add(topPanel);
@@ -123,10 +132,6 @@ public class UIPanel extends JPanel {
         add(bottomPanel);
     }
 
-    public void addItemListener(ItemListener aListener) {
-        typeComboBox.addItemListener(aListener);
-    }
-
     public void addSaveListener(SaveListener listener) {
         saveListeners.add(listener);
     }
@@ -139,8 +144,16 @@ public class UIPanel extends JPanel {
         startButton.addActionListener(actionListener);
     }
 
-    public String getTitleValue() {
-        return title.getText();
+    public String getNameValue() {
+        return name.getText();
+    }
+
+    public void setNameValue(String text) {
+        name.setText(text);
+    }
+
+    public RouteSegmentType getSegmentType() {
+        return (RouteSegmentType) typeComboBox.getSelectedItem();
     }
 
     public void setStartStopText(String text) {

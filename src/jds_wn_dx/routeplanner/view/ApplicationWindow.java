@@ -30,11 +30,11 @@ import java.util.List;
 
 /**
  * Assignment: Route Planner
- * Author: Julian Dominguez-Schatz
+ * Author: Waseef Nayeem
  * Date: 07/05/2017
  * Description: Represents the window that the application is rendered into. It autonomously configures the application
  * window, but needs to be instantiated and shown via setVisible(true) on the AWT Event Queue.
- * <p>
+ *
  * This object is a view object.
  */
 public class ApplicationWindow extends JFrame {
@@ -45,6 +45,8 @@ public class ApplicationWindow extends JFrame {
     private UIPanel uiPanel;
     private WorldWindowGLCanvas worldWindowGLCanvas;
     private Path displayPath;
+    private List<Marker> markers;
+    private BasicMarkerAttributes markerAttributes;
 
     /**
      * Default constructor.
@@ -109,19 +111,16 @@ public class ApplicationWindow extends JFrame {
 
         pathLayer.addTo(worldWindowGLCanvas);
 
-        BasicMarkerAttributes mAttrs = new BasicMarkerAttributes();
-        mAttrs.setMaterial(new Material(Color.WHITE));
+        markerAttributes = new BasicMarkerAttributes();
+        markerAttributes.setMaterial(new Material(Color.WHITE));
 
-        List<Marker> markers = new ArrayList<>(1);
-        markers.add(new BasicMarker(Position.fromDegrees(90, 0), mAttrs));
-//        currentPoint = markers.get(0);
+        markers = new ArrayList<>();
         MarkerLayer markerLayer = new MarkerLayer();
         markerLayer.setMarkers(markers);
         LayerUtils.insertBeforeCompass(worldWindowGLCanvas, markerLayer);
 
         uiPanel = new UIPanel();
 
-//        getContentPane().add(wwd, BorderLayout.CENTER);
         JSplitPane contents = new JSplitPane();
         contents.setLeftComponent(uiPanel);
         contents.setRightComponent(worldWindowGLCanvas);
@@ -140,5 +139,9 @@ public class ApplicationWindow extends JFrame {
 
     public Path getDisplayPath() {
         return displayPath;
+    }
+
+    public void addMarker(Position toAdd) {
+        markers.add(new BasicMarker(toAdd, markerAttributes));
     }
 }
