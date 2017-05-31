@@ -10,8 +10,16 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * Assignment: Route Planner
+ * Author: Danny Xu
+ * Date: 30/05/2017
+ * Description: Handles all of the XML I/O subsystems
+ */
+
 public class XML_IO {
 
+    // Fields required for XML operations
     private DocumentBuilderFactory dbFactory;
     private DocumentBuilder dBuilder;
     private Document doc;
@@ -25,12 +33,11 @@ public class XML_IO {
     private ArrayList<String> start = new ArrayList<String>(0);
     private ArrayList<String> end = new ArrayList<String>(0);
 
-    private final String ENCODING = "UTF-8";
-
     public XML_IO() {
         initialize();
     }
 
+    // Initializes the program
     private void initialize() {
         try {
             dbFactory = DocumentBuilderFactory.newInstance();
@@ -40,7 +47,7 @@ public class XML_IO {
         }
     }
 
-
+    // Sets the data, to be called after a file has been loaded so that information is visible to other systems
     public void setData() {
         try {
             routeTypeList = doc.getElementsByTagName("RouteType");
@@ -69,7 +76,7 @@ public class XML_IO {
     }
 
 
-
+    // Loads the file into memory and makes file information visible to other systems
     public void inputFile(File file) {
         try {
             doc = dBuilder.parse(file);
@@ -79,13 +86,19 @@ public class XML_IO {
         }
     }
 
-    public void outputFile(ArrayList<String> array, String nameType) {
+    // Outputs a file given the correct information as an XML following the FLT format
+    public void outputFile(ArrayList<String> routetype, ArrayList<String> startcoords, ArrayList<String> endcoords, String nameType) {
         Document document = dBuilder.newDocument();
         Element rootElement = document.createElement("Document");
         Attr attrType = document.createAttribute("type");
         attrType.setValue("FTL");
         rootElement.setAttributeNode(attrType);
         document.appendChild(rootElement);
+        //for (int i = 0; i < routetype.size(); i++) {
+         //   Element path = document.createElement("Path");
+         //   rootElement.appendChild(doc.createTextNode(routetype.get(0)));
+        //}
+
 
 
         try {
@@ -99,6 +112,7 @@ public class XML_IO {
         }
     }
 
+    // Getters for various point data from files
     public ArrayList<String> getRouteType() {
         return routeType;
     }
