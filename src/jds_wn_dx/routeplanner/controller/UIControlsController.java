@@ -49,7 +49,7 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
 
     @Override
     public void onSave(File out) {
-        String name = panel.getTitleValue();
+        String name = panel.getNameValue();
         RouteIO.Data data = new RouteIO.Data(currentRoute, name);
         routeIOWrapper.writeToXML(data, out);
     }
@@ -59,7 +59,7 @@ public class UIControlsController extends MouseAdapter implements SaveListener, 
         RouteIO.Data data = routeIOWrapper.readFromXML(in);
 
         this.currentRoute = data.getRoute();
-        panel.setTitleValue(data.getName());
+        panel.setNameValue(data.getName());
 
         // update the view
         panel.setStartStopText(UIPanel.START_TEXT);

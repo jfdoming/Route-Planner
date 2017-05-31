@@ -1,5 +1,7 @@
 package jds_wn_dx.routeplanner.view;
 
+import jds_wn_dx.routeplanner.controller.LoadListener;
+import jds_wn_dx.routeplanner.controller.SaveListener;
 import jds_wn_dx.routeplanner.model.RouteSegmentType;
 
 import javax.swing.Box;
@@ -10,16 +12,15 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
-import jds_wn_dx.routeplanner.controller.LoadListener;
-import jds_wn_dx.routeplanner.controller.SaveListener;
-
-import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
@@ -35,11 +36,9 @@ public class UIPanel extends JPanel {
     public static final String START_TEXT = "Start";
     public static final String STOP_TEXT = "Stop";
 
-    private boolean active;
     private JButton startButton;
     private JTextField name;
     private JComboBox<RouteSegmentType> typeComboBox;
-    private JTextField title;
     private JSpinner altitudeSpinner;
     private SpinnerNumberModel model;
 
@@ -78,7 +77,6 @@ public class UIPanel extends JPanel {
         model = new SpinnerNumberModel(altitude, MIN_ALTITUDE, MAX_ALTITUDE, STEP);
         altitudeSpinner.setModel(model);
 
-        startButton = new JButton("Start");
         JButton saveButton = new JButton("Save");
         JButton loadButton = new JButton("Load");
 
@@ -91,6 +89,12 @@ public class UIPanel extends JPanel {
             int returnVal = chooser.showSaveDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File saveFile = chooser.getSelectedFile();
+
+                // make sure the file name ends in .xml
+                if (!saveFile.getName().endsWith(".xml")) {
+                    saveFile = new File(saveFile.getAbsolutePath().concat(".xml"));
+                }
+
                 for (SaveListener listener : saveListeners) {
                     listener.onSave(saveFile);
                 }
@@ -105,6 +109,12 @@ public class UIPanel extends JPanel {
             int returnVal = chooser.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File loadFile = chooser.getSelectedFile();
+
+                // make sure the file name ends in .xml
+                if (!loadFile.getName().endsWith(".xml")) {
+                    loadFile = new File(loadFile.getAbsolutePath().concat(".xml"));
+                }
+
                 for (LoadListener listener : loadListeners) {
                     listener.onLoad(loadFile);
                 }
@@ -165,10 +175,6 @@ public class UIPanel extends JPanel {
         startButton.addActionListener(listener);
     }
 
-    public String getTitleValue() {
-        return title.getText();
-    }
-
     public double getAltitudeSpinnerValue() {
         return model.getNumber().intValue();
     }
@@ -177,8 +183,12 @@ public class UIPanel extends JPanel {
         startButton.setText(s);
     }
 
-    public void setTitleValue(String s) {
-        title.setText(s);
+    public void setNameValue(String s) {
+        name.setText(s);
+    }
+
+    public String getNameValue() {
+        return name.getText();
     }
 
     public RouteSegmentType getSegmentType() {
